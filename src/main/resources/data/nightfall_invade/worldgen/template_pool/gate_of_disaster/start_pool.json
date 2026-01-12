@@ -1,0 +1,15 @@
+{
+  "name": "nightfall_invade:gate_of_disaster/start_pool",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "location": "nightfall_invade:gate_of_disaster",
+        "processors": "minecraft:empty",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "entity.nightfall_invade.arterius": "<最后的守望者 - 亚尔特留斯>",
+  "entity.nightfall_invade.arterius_hard": "<烈焰主宰 - 亚尔特留斯（未完工）>",
+  "boss_bar.nightfall_invade.arterius": "<亚尔特留斯>",
+  "boss_bar.nightfall_invade.arterius_hard": "<烈焰主宰（未完工）>",
+  "effect.nightfall_invade.soul_of_flame": "烈焰之魂",
+  "creativetab.nightfall_invade.items": "夜幕入侵 物品",
+  "item.nightfall_invade.arterius_spawn_egg": "亚尔特留斯刷怪蛋",
+  "structure.nightfall_invade.gate_of_disaster": "灾厄之门",
+  "advancements.nightfall_invade.root.title": "夜幕入侵",
+  "advancements.nightfall_invade.root.description": "开启你的旅程",
+  "advancements.nightfall_invade.kill_arterius.title": "最后的守望者",
+  "advancements.nightfall_invade.kill_arterius.description": "亚尔特留斯，传奇六英雄之一，为阻异界灾厄而战。其战友皆已陨落，他为摧毁「灾厄之门」而神志尽失。即使如此，他也依旧坚守着自己的使命，化作永恒的守望者，阻止灾厄重临。"
+}

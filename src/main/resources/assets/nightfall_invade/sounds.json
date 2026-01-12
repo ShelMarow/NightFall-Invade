@@ -1,0 +1,8 @@
+{
+  "arterius.bgm.spear_of_flame": {
+    "category": "master",
+    "sounds": [
+      {"name": "nightfall_invade:bgm/spear_of_flame","stream":true}
+    ]
+  }
+}

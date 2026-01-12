@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "efn:meen_spear"
+    },
+    "title": {
+      "translate": "advancements.nightfall_invade.kill_arterius.title"
+    },
+    "description": {
+      "translate": "advancements.nightfall_invade.kill_arterius.description"
+    },
+    "frame": "challenge"
+  },
+  "parent": "nightfall_invade:root",
+  "criteria": {
+    "arterius": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "nightfall_invade:arterius"
+        }
+      }
+    }
+  }
+}
