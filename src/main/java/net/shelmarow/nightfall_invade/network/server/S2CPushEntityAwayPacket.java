@@ -8,29 +8,26 @@ import java.util.function.Supplier;
 
 public class S2CPushEntityAwayPacket {
     private final int entityID;
-    private final float range;
-    private final float strength;
+    private final float strengthX;
+    private final float strengthZ;
     private final float airBorne;
-    private final int type;
 
-    public S2CPushEntityAwayPacket(int entityID, float range, float strength, float airBorne,int type) {
+    public S2CPushEntityAwayPacket(int entityID, float strengthX, float airBorne, float strengthZ) {
         this.entityID = entityID;
-        this.range = range;
-        this.strength = strength;
+        this.strengthX = strengthX;
         this.airBorne = airBorne;
-        this.type = type;
+        this.strengthZ = strengthZ;
     }
 
     public static void encode(S2CPushEntityAwayPacket msg, FriendlyByteBuf buffer){
         buffer.writeInt(msg.entityID);
-        buffer.writeFloat(msg.range);
-        buffer.writeFloat(msg.strength);
+        buffer.writeFloat(msg.strengthX);
         buffer.writeFloat(msg.airBorne);
-        buffer.writeInt(msg.type);
+        buffer.writeFloat(msg.strengthZ);
     }
 
     public static S2CPushEntityAwayPacket decode(FriendlyByteBuf buffer){
-        return new S2CPushEntityAwayPacket(buffer.readInt(), buffer.readFloat(), buffer.readFloat(),buffer.readFloat(),buffer.readInt());
+        return new S2CPushEntityAwayPacket(buffer.readInt(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
     }
 
     public static void handle(S2CPushEntityAwayPacket msg, Supplier<NetworkEvent.Context> ctx) {
@@ -44,19 +41,15 @@ public class S2CPushEntityAwayPacket {
         return entityID;
     }
 
-    public float getRange() {
-        return range;
+    public float getStrengthX() {
+        return strengthX;
     }
 
-    public float getStrength() {
-        return strength;
+    public float getStrengthZ() {
+        return strengthZ;
     }
 
     public float getAirBorne() {
         return airBorne;
-    }
-
-    public int getType() {
-        return type;
     }
 }

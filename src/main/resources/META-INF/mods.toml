@@ -14,6 +14,7 @@ description='''${mod_description}'''
     versionRange="${forge_version_range}"
     ordering="NONE"
     side="BOTH"
+
 [[dependencies.${mod_id}]]
     modId="minecraft"
     mandatory=true
@@ -24,20 +25,34 @@ description='''${mod_description}'''
 [[dependencies.${mod_id}]]
 modId="epicfight"
 mandatory=true
-versionRange="[20.12,)"
+versionRange="[20.14.0,)"
 ordering="AFTER"
 side="BOTH"
 
 [[dependencies.${mod_id}]]
 modId="efn"
 mandatory=true
-versionRange="[2.0,)"
+versionRange="[3.1.6,)"
 ordering="AFTER"
 side="BOTH"
 
 [[dependencies.${mod_id}]]
 modId="combat_evolution"
 mandatory=true
-versionRange="[1.1.10,)"
+versionRange="[2.1.2,)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="cataclysm"
+mandatory=true
+versionRange="[3.16,)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="epicfightx"
+mandatory=true
+versionRange="[1.1.3,)"
 ordering="AFTER"
 side="BOTH"

@@ -12,6 +12,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors;
@@ -48,7 +49,7 @@ import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 import java.util.List;
 import java.util.Set;
 
-public class ArteriusPatch extends CEHumanoidPatch implements CustomExecuteEntity {
+public class ArteriusPatch extends CEHumanoidPatch<Arterius> implements CustomExecuteEntity {
 
     private int stunLevel = 0;
     private int lastStunTime = 0;
@@ -59,17 +60,16 @@ public class ArteriusPatch extends CEHumanoidPatch implements CustomExecuteEntit
 
     @Override
     public void setAIAsInfantry() {
-        CECombatBehaviors.Builder<MobPatch<?>> builder = ((Arterius)original).isDifficultyHard() ? ArteriusAI.HARD : ArteriusAI.NORMAL;
+        CECombatBehaviors.Builder<MobPatch<?>> builder = original.isDifficultyHard() ? ArteriusAI.HARD.get() : ArteriusAI.creatNormal();
         if(builder != null) {
             this.original.goalSelector.addGoal(0, new CEAnimationAttackGoal<>(this, builder.build()));
-            this.original.goalSelector.addGoal(1, new CommonChasingGoal(this, attackRadius));
+            this.original.goalSelector.addGoal(1, new CommonChasingGoal(this, attackRadius, this.chasingSpeed));
         }
 
     }
 
     @Override
-    public void initAnimator(Animator animator) {
-        super.initAnimator(animator);
+    public void initLivingMotions(Animator animator) {
         animator.addLivingAnimation(LivingMotions.BLOCK, Animations.SPEAR_GUARD);
         animator.addLivingAnimation(LivingMotions.IDLE, EFNLanceAnimations.NF_MEEN_IDLE);
         animator.addLivingAnimation(LivingMotions.WALK, EFNLanceAnimations.NF_MEEN_WALK);
@@ -101,7 +101,7 @@ public class ArteriusPatch extends CEHumanoidPatch implements CustomExecuteEntit
                 )));
 
         this.weaponAttackMotions.put(CapabilityItem.WeaponCategories.SPEAR,
-                ImmutableMap.of(CapabilityItem.Styles.TWO_HAND, ArteriusAI.NORMAL));
+                ImmutableMap.of(CapabilityItem.Styles.TWO_HAND, ArteriusAI.creatNormal()));
     }
 
     @Override
@@ -111,6 +111,9 @@ public class ArteriusPatch extends CEHumanoidPatch implements CustomExecuteEntit
 
     @Override
     public AttackResult attack(EpicFightDamageSource damageSource, Entity target, InteractionHand hand) {
+        if(!(target instanceof Player)){
+            damageSource.setBaseImpact(damageSource.getBaseImpact() * 2F);
+        }
         AttackResult result = super.attack(damageSource,target,hand);
         if(result.resultType == AttackResult.ResultType.SUCCESS && target.isAlive()) {
             if(target.getRemainingFireTicks() <= 0){
@@ -134,9 +137,7 @@ public class ArteriusPatch extends CEHumanoidPatch implements CustomExecuteEntit
     public void tick(LivingEvent.LivingTickEvent event) {
         super.tick(event);
         //同步boss信息
-        if(this.original instanceof Arterius entity){
-            entity.setStamina(CEPatchUtils.getStaminaPercent(this),CEPatchUtils.getStaminaStatus(this));
-        }
+        original.setStamina(CEPatchUtils.getStaminaPercent(this),CEPatchUtils.getStaminaStatus(this));
 
         if(stunLevel > 0 && original.tickCount - lastStunTime >= 100) {
             --stunLevel;
@@ -240,12 +241,12 @@ public class ArteriusPatch extends CEHumanoidPatch implements CustomExecuteEntit
     }
 
     @Override
-    public boolean canUseCustomType(LivingEntityPatch<?> livingEntityPatch) {
+    public boolean canUseCustomType(LivingEntityPatch<?> executorPatch, ExecutionTypeManager.Type executionType) {
         return false;
     }
 
     @Override
-    public ExecutionTypeManager.Type getExecutionType() {
+    public ExecutionTypeManager.Type getExecutionType(LivingEntityPatch<?> executorPatch, ExecutionTypeManager.Type executionType) {
         return ExecutionTypeManager.DEFAULT_TYPE;
     }
 

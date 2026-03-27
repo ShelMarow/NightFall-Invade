@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures":
+  {
+    "layer0" : "nightfall_invade:item/disaster_fragment_red"
+  }
+}

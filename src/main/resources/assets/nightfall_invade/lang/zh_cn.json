@@ -1,14 +1,41 @@
 {
-  "entity.nightfall_invade.arterius": "<最后的守望者 - 亚尔特留斯>",
-  "entity.nightfall_invade.arterius_hard": "<烈焰主宰 - 亚尔特留斯（未完工）>",
-  "boss_bar.nightfall_invade.arterius": "<亚尔特留斯>",
+  "entity.nightfall_invade.arterius": "<最后的守望者 - 亚尔特硫斯>",
+  "entity.nightfall_invade.arterius_hard": "<烈焰主宰 - 亚尔特硫斯（未完工）>",
+  "entity.nightfall_invade.scarlet_hunter": "<赤色猎手-布莱德>",
+
+  "boss_bar.nightfall_invade.arterius": "<亚尔特硫斯>",
   "boss_bar.nightfall_invade.arterius_hard": "<烈焰主宰（未完工）>",
+
+  "key.nightfall_invade.category": "夜幕入侵 技能按键",
+  "key.nightfall_invade.nfi_skill": "异界战技 技能1",
+
   "effect.nightfall_invade.soul_of_flame": "烈焰之魂",
+
+  "epicfight.skill_slot.nfi_combat_art1": "异界战技",
+  "skill.epicfight.nfi_combat_art.category": "异界战技",
+
+  "skill.nightfall_invade.blood_slash": "鲜血斩击",
+  "skill.nightfall_invade.blood_slash.tooltip": "释放五道无法防御和闪避的纵向斩击\n对沿途的所有敌人造成:\n [攻击力150% + 目标最大生命值5% + 目标生命值15%] 的伤害\n每命中一名敌人回复自身10%的生命值",
+  "skill.nightfall_invade.blood_boom": "鲜血飞弹",
+  "skill.nightfall_invade.blood_boom.tooltip": "释放10个鲜血飞弹，追踪目标攻击\n命中敌人时造成：\n[攻击力20% + 目标生命值6%] 的魔法伤害，并回复自身5%的生命值",
+
   "creativetab.nightfall_invade.items": "夜幕入侵 物品",
-  "item.nightfall_invade.arterius_spawn_egg": "亚尔特留斯刷怪蛋",
+  "item.nightfall_invade.arterius_spawn_egg": "亚尔特硫斯刷怪蛋",
+  "item.nightfall_invade.scarlet_hunter_spawn_egg": "赤色猎手刷怪蛋",
+  "item.nightfall_invade.disaster_fragment_red": "灾厄碎片-红",
+
   "structure.nightfall_invade.gate_of_disaster": "灾厄之门",
+
   "advancements.nightfall_invade.root.title": "夜幕入侵",
   "advancements.nightfall_invade.root.description": "开启你的旅程",
   "advancements.nightfall_invade.kill_arterius.title": "最后的守望者",
-  "advancements.nightfall_invade.kill_arterius.description": "亚尔特留斯，传奇六英雄之一，为阻异界灾厄而战。其战友皆已陨落，他为摧毁「灾厄之门」而神志尽失。即使如此，他也依旧坚守着自己的使命，化作永恒的守望者，阻止灾厄重临。"
+  "advancements.nightfall_invade.kill_arterius.description": "亚尔特硫斯，传奇六英雄之一，为阻异界灾厄而战。其战友皆已陨落，他为摧毁「灾厄之门」而神志尽失。即使如此，他也依旧坚守着自己的使命，化作永恒的守望者，阻止灾厄重临。",
+  "advancements.nightfall_invade.kill_scarlet_hunter.title":"赤色猎手",
+  "advancements.nightfall_invade.kill_scarlet_hunter.description":"传承自古老血统的猎人，在首次异界灾厄入侵之战结束后，保管着重启「灾厄之门」的碎片之一。如果能集齐所有的灾厄碎片，或许就能再度开启通往异界之门...",
+
+  "message.combat_evolution.scarlet_hunter_phase2": "受命运愚弄之人，你将会为你的无知付出代价...",
+  "message.combat_evolution.scarlet_hunter_phase3": "执迷不悟的战士，你扭曲的命运就让我来终结...",
+  "message.combat_evolution.scarlet_hunter_death": "你一心追寻灾厄，究竟是为了毁灭什么？",
+
+  "death.attack.blood_slash": "%1$s 被 %2$s 的鲜血斩击吞噬"
 }

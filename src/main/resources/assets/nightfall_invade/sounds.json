@@ -4,5 +4,11 @@
     "sounds": [
       {"name": "nightfall_invade:bgm/spear_of_flame","stream":true}
     ]
+  },
+  "scarlet_hunter.bgm.blood_for_blood": {
+    "category": "master",
+    "sounds": [
+      {"name": "nightfall_invade:bgm/blood_for_blood","stream":true}
+    ]
   }
 }

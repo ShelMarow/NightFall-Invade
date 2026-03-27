@@ -38,7 +38,6 @@ public class ArteriusBossEvents {
 
     @SubscribeEvent
     public static void onKnockback(LivingKnockBackEvent event) {
-        //取消击退
         Entity target = event.getEntity();
         if (target instanceof Arterius) {
             event.setStrength(0.0F);

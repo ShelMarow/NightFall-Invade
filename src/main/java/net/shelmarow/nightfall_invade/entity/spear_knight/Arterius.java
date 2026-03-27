@@ -40,6 +40,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.common.MinecraftForge;
 import net.shelmarow.combat_evolution.ai.StaminaStatus;
 import net.shelmarow.combat_evolution.ai.goal.CEAnimationAttackGoal;
 import net.shelmarow.combat_evolution.ai.util.BehaviorUtils;
@@ -49,6 +50,7 @@ import net.shelmarow.combat_evolution.bgm.network.CEMusicPacket;
 import net.shelmarow.combat_evolution.bossbar.CEBossEvent;
 import net.shelmarow.combat_evolution.damage_source.CEDamageTypeTags;
 import net.shelmarow.nightfall_invade.NightFallInvade;
+import net.shelmarow.nightfall_invade.api.event.NFIFinalDamageEvent;
 import net.shelmarow.nightfall_invade.config.boss.BossConfig;
 import net.shelmarow.nightfall_invade.entity.spear_knight.ai.ArteriusAI;
 import net.shelmarow.nightfall_invade.entity.spear_knight.goal.AttackMonsterGoal;
@@ -69,6 +71,9 @@ public class Arterius extends PathfinderMob {
     private boolean inBattle = true;
     private Vec3 homePos = null;
     private boolean difficultyHard = false;
+
+    //脱战自回血
+    private int noTargetTime = 0;
 
     /*通用数据记录*/
     private int bossPhase = 0;
@@ -212,7 +217,7 @@ public class Arterius extends PathfinderMob {
         ArteriusPatch arteriusPatch = EpicFightCapabilities.getEntityPatch(this,ArteriusPatch.class);
         if(arteriusPatch!=null){
             this.goalSelector.removeAllGoals(goal -> goal instanceof CEAnimationAttackGoal<?>);
-            this.goalSelector.addGoal(0, new CEAnimationAttackGoal<>(arteriusPatch, (isDifficultyHard() ? ArteriusAI.HARD : ArteriusAI.NORMAL).build()));
+            this.goalSelector.addGoal(0, new CEAnimationAttackGoal<>(arteriusPatch, (isDifficultyHard() ? ArteriusAI.HARD.get() : ArteriusAI.creatNormal()).build()));
         }
     }
 
@@ -318,7 +323,7 @@ public class Arterius extends PathfinderMob {
         //回复所有耐力
         addEntityStamina((float) getAttributeValue(EpicFightAttributes.MAX_STAMINA.get()));
 
-        //重新上装备（主要是重置招CD）
+        //重新上装备
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(EFNItem.MEEN_SPEAR.get()));
         this.setItemSlot(EquipmentSlot.HEAD, new ItemStack(EFNItem.DUSKFIRE_HELMET.get()));
         this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(EFNItem.DUSKFIRE_CHESTPLATE.get()));
@@ -410,6 +415,21 @@ public class Arterius extends PathfinderMob {
     public void tick(){
         super.tick();
 
+        if(!level().isClientSide){
+            if(getTarget() == null){
+                if(noTargetTime < 200) {
+                    noTargetTime++;
+                }
+                else if(getHealth() < getMaxHealth() && tickCount % 10 == 0){
+                    heal(getMaxHealth() * 0.1F);
+                    setPhaseByHealth();
+                }
+            } else if(noTargetTime != 0){
+                noTargetTime = 0;
+            }
+        }
+
+
         this.bossEvent.setProgress(this.getHealth()/this.getMaxHealth());
 
         lastDeltaMovement = getDeltaMovement();
@@ -418,7 +438,7 @@ public class Arterius extends PathfinderMob {
 
         if(getTarget() != null){
             LivingEntity target = getTarget();
-            if(target.distanceToSqr(this) > 10*108 || Math.abs(target.getY() - this.getY()) >= 3){
+            if(target.distanceToSqr(this) > 10 * 10 || Math.abs(target.getY() - this.getY()) >= 3){
                 farAwayFromTargetTime++;
             }
         }
@@ -517,6 +537,7 @@ public class Arterius extends PathfinderMob {
     }
 
 
+    @Override
     public boolean removeWhenFarAway(double distance) {
         return false;
     }
@@ -532,14 +553,6 @@ public class Arterius extends PathfinderMob {
         this.hasImpulse = true;
     }
 
-    public void setCanSetDeltaMovementTimer(int tick){
-        this.canSetDeltaMovementTimer = tick;
-    }
-
-    public void setCanSetDeltaMovement(boolean canSetDeltaMovement) {
-        this.canSetDeltaMovement = canSetDeltaMovement;
-    }
-
     @Override
     public void setDeltaMovement(@NotNull Vec3 pDeltaMovement) {
         if(!canSetDeltaMovement) return;
@@ -552,6 +565,15 @@ public class Arterius extends PathfinderMob {
             super.setDeltaMovement(lastDeltaMovement.add(pDeltaMovement.normalize().scale(2)));
         }
     }
+
+    public void setCanSetDeltaMovementTimer(int tick){
+        this.canSetDeltaMovementTimer = tick;
+    }
+
+    public void setCanSetDeltaMovement(boolean canSetDeltaMovement) {
+        this.canSetDeltaMovement = canSetDeltaMovement;
+    }
+
 
     @Override
     protected int decreaseAirSupply(int air) {
@@ -658,6 +680,10 @@ public class Arterius extends PathfinderMob {
                         BehaviorUtils.stopCurrentBehavior(this);
                     }
                 }
+
+
+                NFIFinalDamageEvent event = new NFIFinalDamageEvent(this, pDamageSource, damage);
+                damage = MinecraftForge.EVENT_BUS.post(event) ? 0 : event.getAmount();
 
                 this.getCombatTracker().recordDamage(pDamageSource, damage);
                 this.setHealth(this.getHealth() - damage);
