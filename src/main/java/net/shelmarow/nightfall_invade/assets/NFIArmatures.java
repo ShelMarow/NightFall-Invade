@@ -1,7 +1,6 @@
 package net.shelmarow.nightfall_invade.assets;
 
 import net.shelmarow.nightfall_invade.NightFallInvade;
-import net.shelmarow.nightfall_invade.entity.NFIEntities;
 import yesman.epicfight.api.model.Armature;
 import yesman.epicfight.gameasset.Armatures;
 

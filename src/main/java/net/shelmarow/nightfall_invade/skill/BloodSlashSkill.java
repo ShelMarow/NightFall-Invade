@@ -18,7 +18,7 @@ public class BloodSlashSkill extends Skill {
 
     public BloodSlashSkill(SkillBuilder<? extends Skill> builder) {
         super(builder.setCategory(NFISkillCategories.NFI_COMBAT_ART).setActivateType(ActivateType.TOGGLE).setResource(Resource.COOLDOWN));
-        this.consumption = 30;
+        this.consumption = 45;
         this.maxStackSize = 1;
     }
 

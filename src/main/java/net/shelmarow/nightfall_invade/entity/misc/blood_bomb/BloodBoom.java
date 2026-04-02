@@ -13,7 +13,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -123,7 +125,7 @@ public class BloodBoom extends Projectile {
                     double t = Math.min(1.0, maxTurn / angle);
 
                     Vec3 newXZ = currentXZ.lerp(targetXZ, t).normalize();
-                    double verticalLerp = 0.25;
+                    double verticalLerp = 0.2;
                     double newY = Mth.lerp(verticalLerp, currentDir.y, targetDir.y);
                     Vec3 newDir = new Vec3(newXZ.x, newY, newXZ.z).normalize();
 
@@ -333,7 +335,7 @@ public class BloodBoom extends Projectile {
 
             float hpDamage = 0.15F;
             if(ownerPatch instanceof PlayerPatch){
-                hpDamage = 0.06F;
+                hpDamage = 0.03F;
             }
             boolean success = livingTarget.hurt(efSource, this.damage + livingTarget.getHealth() * hpDamage);
             if(success && original != null) {

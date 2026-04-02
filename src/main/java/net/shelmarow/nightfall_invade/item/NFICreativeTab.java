@@ -7,9 +7,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import net.shelmarow.nightfall_invade.NightFallInvade;
-import net.shelmarow.nightfall_invade.assets.NFISkills;
-import yesman.epicfight.world.item.EpicFightItems;
-import yesman.epicfight.world.item.SkillBookItem;
 
 public class NFICreativeTab {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, NightFallInvade.MOD_ID);

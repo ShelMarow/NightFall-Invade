@@ -13,18 +13,15 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.shelmarow.combat_evolution.ai.CECombatBehaviors;
@@ -55,6 +52,7 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+import yesman.epicfight.world.damagesource.EpicFightDamageSources;
 import yesman.epicfight.world.damagesource.EpicFightDamageTypeTags;
 import yesman.epicfight.world.damagesource.StunType;
 
@@ -63,7 +61,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class ScarletHunterAI {
 
@@ -255,7 +252,7 @@ public class ScarletHunterAI {
                                 .addTimeEvent(lookAtTarget())
                                 .addHitEvent(new HitEvent(AttackResult.ResultType.SUCCESS, (mobPatch, entity) -> {
                                     EpicFightCapabilities.getUnparameterizedEntityPatch(entity, LivingEntityPatch.class).ifPresent(entityPatch -> {
-                                        EntityStunEvent entityStunEvent = new EntityStunEvent(null, entityPatch, StunType.LONG);
+                                        EntityStunEvent entityStunEvent = new EntityStunEvent(EpicFightDamageSources.mobAttack((LivingEntity) entityPatch.getOriginal()), entityPatch, StunType.LONG);
                                         if(!MinecraftForge.EVENT_BUS.post(entityStunEvent) && entityPatch.isStunned()){
                                             CEPatchUtils.setPhase(mobPatch,1);
                                             if(entityPatch instanceof PlayerPatch<?> playerPatch){
@@ -653,7 +650,7 @@ public class ScarletHunterAI {
                 .newBehaviorRoot(CECombatBehaviors.BehaviorRoot.builder()
                         .rootName("远距离追击")
                         .priority(1).weight(5)
-                        .maxCooldown(400)
+                        .maxCooldown(200)
                         .cooldown(80)
 
                         .addFirstBehavior(CECombatBehaviors.Behavior.builder()
@@ -781,7 +778,10 @@ public class ScarletHunterAI {
                                                                                                 })
                                                                                                 .addTimeEvent(new TimeEvent(3.75F, mobPatch -> {
                                                                                                     CEPatchUtils.setPlaySpeed(mobPatch, 1F);
-                                                                                                    mobPatch.playAnimationSynchronized(Animations.BIPED_COMMON_NEUTRALIZED,0.35F);
+                                                                                                    if(mobPatch instanceof ScarletHunterPatch scarletHunterPatch){
+                                                                                                        scarletHunterPatch.getOriginal().setCanBypassStunImmunity(true);
+                                                                                                        mobPatch.playAnimationSynchronized(Animations.BIPED_COMMON_NEUTRALIZED,0.35F);
+                                                                                                    }
                                                                                                 }))
                                                                                         )
                                                                                 )
@@ -826,7 +826,7 @@ public class ScarletHunterAI {
                                         }),
                                         new TimeEvent(0.35F, mobPatch -> {
                                             double verticalSpeed = 0.3 + Math.random() * 0.3;
-                                            float damage = (float) mobPatch.getOriginal().getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.20F;
+                                            float damage = (float) mobPatch.getOriginal().getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.08F;
                                             spawnBloodBoom(mobPatch, 70, 20, 30, 4, verticalSpeed, damage);
                                         })
                                 )
@@ -910,12 +910,12 @@ public class ScarletHunterAI {
                 .newBehaviorRoot(CECombatBehaviors.BehaviorRoot.builder()
                         .rootName("赤色末路")
                         .priority(100).weight(100)
-                        .maxCooldown(1000)
+                        .maxCooldown(1200)
 
                         //转阶段专用
                         .addFirstBehavior(CECombatBehaviors.Behavior.builder()
                                 .name("转阶段")
-                                .priority(3)
+                                .priority(100)
                                 .custom(mobPatch -> {
                                     ScarletHunter scarletHunter = (ScarletHunter) mobPatch.getOriginal();
                                     return scarletHunter.getBossPhase() == 0 && scarletHunter.getPhaseChangeCounter() > 0;
@@ -995,7 +995,7 @@ public class ScarletHunterAI {
                                                             PlayerPatch<?> playerPatch = EpicFightCapabilities.getPlayerPatch(player);
                                                             if (playerPatch != null) {
                                                                 playerPatch.setStamina(0F);
-                                                                playerPatch.setStaminaRegenAwaitTicks(30);
+                                                                playerPatch.setStaminaRegenAwaitTicks(0);
                                                             }
                                                         }
                                                     }
@@ -1080,7 +1080,7 @@ public class ScarletHunterAI {
                                                             PlayerPatch<?> playerPatch = EpicFightCapabilities.getPlayerPatch(player);
                                                             if (playerPatch != null) {
                                                                 playerPatch.setStamina(0F);
-                                                                playerPatch.setStaminaRegenAwaitTicks(30);
+                                                                playerPatch.setStaminaRegenAwaitTicks(0);
                                                             }
                                                         }
                                                     }
@@ -1141,8 +1141,8 @@ public class ScarletHunterAI {
                                                             teleportInFrontAlongLine(mobPatch.getOriginal(), mobPatch.getTarget(), 4.0, 0);
                                                             CEPatchUtils.setPlaySpeed(mobPatch,0.75F);
 
-                                                            float damage = (float) (mobPatch.getOriginal().getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.20);
-                                                            spawnBloodBoom(mobPatch, 75, 10, 80, 1F, 0.4, damage);
+                                                            float damage = (float) (mobPatch.getOriginal().getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.08);
+                                                            spawnBloodBoom(mobPatch, 75, 5, 80, 1F, 0.4, damage);
                                                         }),
                                                         new TimeEvent(1.65F,mobPatch -> {
                                                             if(mobPatch.getTarget() instanceof Player) {
@@ -1221,12 +1221,16 @@ public class ScarletHunterAI {
                                                             PlayerPatch<?> playerPatch = EpicFightCapabilities.getPlayerPatch(player);
                                                             if (playerPatch != null) {
                                                                 playerPatch.setStamina(0F);
-                                                                playerPatch.setStaminaRegenAwaitTicks(30);
+                                                                playerPatch.setStaminaRegenAwaitTicks(0);
                                                             }
                                                         }
                                                     }
 
                                                 })
+                                                //罚站一会
+                                                .addNextBehavior(CECombatBehaviors.Behavior.builder()
+                                                        .wander(30,0,0)
+                                                )
                                         )
                                 )
                         )
@@ -1236,7 +1240,7 @@ public class ScarletHunterAI {
                 //二阶段追加远程飞弹
                 .newBehaviorRoot(CECombatBehaviors.BehaviorRoot.builder()
                         .priority(1).weight(30)
-                        .maxCooldown(800)
+                        .maxCooldown(900)
                         .cooldown(100)
 
                         .addFirstBehavior(CECombatBehaviors.Behavior.builder()
@@ -1245,7 +1249,7 @@ public class ScarletHunterAI {
                                 .setPhase(0)
                                 .animationBehavior(EFNSkillAnimations.STOMP, new AnimationParams())
                                 .addTimeEvent(new TimeEvent(0.6F, mobPatch -> {
-                                    double damage = mobPatch.getOriginal().getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.20F;
+                                    double damage = mobPatch.getOriginal().getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.08F;
                                     spawnBloodBoom(mobPatch, 60, 10, 80, 2, 0.3, (float) damage);
                                 }))
                                 .addExBehavior(highStunImmunity(100))
@@ -1400,7 +1404,9 @@ public class ScarletHunterAI {
                                                                                 mobPatch.playAnimationSynchronized(AnimationsX.BIPED_COMMON_NEUTRALIZED, 0F);
                                                                                 mobPatch.playSound(EpicFightSounds.NEUTRALIZE_MOBS.get(),  1,0,0);
                                                                                 BehaviorUtils.stopCurrentBehavior(mobPatch.getOriginal());
-                                                                                scarletHunterPatch.dealStaminaDamage(null, CEPatchUtils.getMaxStamina(mobPatch) * 0.2F);
+                                                                                scarletHunterPatch.dealStaminaDamage(null,
+                                                                                        Math.min(CEPatchUtils.getMaxStamina(mobPatch) * 0.2F, CEPatchUtils.getStamina(mobPatch) - 0.1F)
+                                                                                );
                                                                             }
                                                                         }))
                                                                         .addExBehavior(mobPatch -> {
@@ -1505,7 +1511,7 @@ public class ScarletHunterAI {
                 .newGlobalBehavior(CECombatBehaviors.BehaviorRoot.builder()
                         .rootName("全局-空中剑气A")
                         .backAfterFinished(true)
-                        .maxCooldown(700)
+                        .maxCooldown(900)
 
                         .addFirstBehavior(CECombatBehaviors.Behavior.builder()
                                 .name("空中蓄力派生")
@@ -1561,6 +1567,9 @@ public class ScarletHunterAI {
 
                                                 })
                                         )
+                                        .addNextBehavior(CECombatBehaviors.Behavior.builder()
+                                                .wander(30,0,0)
+                                        )
                                 )
                         )
                 )
@@ -1568,7 +1577,7 @@ public class ScarletHunterAI {
                 .newGlobalBehavior(CECombatBehaviors.BehaviorRoot.builder()
                         .rootName("全局-空中剑气B")
                         .backAfterFinished(true)
-                        .maxCooldown(700)
+                        .maxCooldown(900)
 
                         .addFirstBehavior(CECombatBehaviors.Behavior.builder()
                                 .name("空中连斩落地派生")
@@ -1788,7 +1797,7 @@ public class ScarletHunterAI {
                 .newBehaviorRoot(CECombatBehaviors.BehaviorRoot.builder()
                         .rootName("飞空蓄力剑气")
                         .priority(2).weight(1)
-                        .maxCooldown(600)
+                        .maxCooldown(800)
                         .cooldown(600)
 
                         .addFirstBehavior(CECombatBehaviors.Behavior.builder()
@@ -1854,7 +1863,7 @@ public class ScarletHunterAI {
                 .newBehaviorRoot(CECombatBehaviors.BehaviorRoot.builder()
                         .rootName("居合突进")
                         .priority(2).weight(1)
-                        .maxCooldown(600)
+                        .maxCooldown(800)
 
                         .addFirstBehavior(CECombatBehaviors.Behavior.builder()
                                 .custom(isPhaseThree())
@@ -1867,12 +1876,12 @@ public class ScarletHunterAI {
 
                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                         .animationBehavior(EFNMurasamaAnimations.HF_MURASAMA_Y_CHARGE_THROUGH, new AnimationParams()
-                                                .transitionTime(0.3F).playSpeed(0.80F))
+                                                .transitionTime(0.15F).playSpeed(0.7F))
                                         .addExBehavior(mobPatch -> {costStamina(mobPatch, 5F);})
                                         .addExBehavior(highStunImmunity(200),mobPatch -> {
                                             LivingEntity original = mobPatch.getOriginal();
                                             Level level = original.level();
-                                            EntityUtils.pushEntitiesAwayByDistance(original, level, 10, 2F, 0.2F);
+                                            EntityUtils.pushEntitiesAwayByDistance(original, level, 12, 2.25F, 0.2F);
                                             if(level instanceof ServerLevel serverLevel){
                                                 serverLevel.sendParticles(ParticleTypes.SOUL, original.getX(), original.getY() + 1, original.getZ(),100,0,0,0,1);
                                             }
@@ -1886,7 +1895,7 @@ public class ScarletHunterAI {
                                                         spawnWarningLineParticle(serverLevel, original.position(), yaw, 0, 24, 48, NFIParticles.BLOOD_B.get());
                                                     }
                                                 }),
-                                                new TimeEvent(0.35F, mobPatch -> {
+                                                new TimeEvent(0.4F, mobPatch -> {
                                                     if(mobPatch.getTarget() instanceof Player) {
                                                         mobPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.GLOWING, 40, 0, false, false, false));
                                                         mobPatch.playSound(SoundEvents.ANVIL_LAND, 2, 0, 0);
@@ -1901,14 +1910,14 @@ public class ScarletHunterAI {
                                                     float roll = 0;
                                                     spawnBloodSlash(mobPatch, yaw, pitch, roll + 90, 2, 0.1F, 0.25F);
                                                 }),
-                                                new TimeEvent(0.6F, mobPatch -> {
+                                                new TimeEvent(0.58F, mobPatch -> {
                                                     mobPatch.playSound(EpicFightSounds.WHOOSH_SHARP.get(), 2,0,0);
                                                     float yaw = mobPatch.getYRot();
                                                     float pitch = 0;
                                                     float roll = 0;
                                                     spawnBloodSlash(mobPatch, yaw, pitch, roll + 45, 5, 0.1F, 0.25F);
                                                 }),
-                                                new TimeEvent(0.7F, mobPatch -> {
+                                                new TimeEvent(0.66F, mobPatch -> {
                                                     mobPatch.playSound(EpicFightSounds.WHOOSH_SHARP.get(), 2,0,0);
                                                     float yaw = mobPatch.getYRot();
                                                     float pitch = 0;
@@ -2185,6 +2194,9 @@ public class ScarletHunterAI {
                                                                                                     spawnBloodSlash(mobPatch, yaw + 30, pitch, roll, 2, 0.1F, 0.25F);
                                                                                                 })
                                                                                         )
+                                                                                        .addNextBehavior(CECombatBehaviors.Behavior.builder()
+                                                                                                .wander(30,0,0)
+                                                                                        )
                                                                                 )
                                                                         )
                                                                 )
@@ -2197,8 +2209,9 @@ public class ScarletHunterAI {
 
                 //远距离剑气（全阶段通用）
                 .newBehaviorRoot(CECombatBehaviors.BehaviorRoot.builder()
+                        .rootName("远距离惩罚剑气")
                         .priority(0.1).weight(1)
-                        .maxCooldown(200)
+                        .maxCooldown(300)
                         .addFirstBehavior(CECombatBehaviors.Behavior.builder()
                                 .health(0.80F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
                                 .custom(mobPatch -> {

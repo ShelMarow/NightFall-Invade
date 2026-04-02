@@ -48,13 +48,14 @@ public class ScarletHunterEvent {
         DamageSource source = event.getSource();
         float damage = event.getAmount();
         Entity trueAttacker = source.getEntity();
+        Entity attacker = source.getDirectEntity();
 
-        if(trueAttacker instanceof ScarletHunter scarletHunter){
+        if(trueAttacker instanceof ScarletHunter scarletHunter && attacker instanceof ScarletHunter){
             //残血增伤
             float healthPercent = scarletHunter.getHealth() / scarletHunter.getMaxHealth();
-            damage *= 1 + (1 - healthPercent) * 0.5F;
+            damage *= 1 + (1 - healthPercent) * 0.2F;
             //减伤过高增伤
-            damage *= 1 + scarletHunter.getDamageProtectPercent() * 0.5F;
+            damage *= 1 + scarletHunter.getDamageProtectPercent() * 0.2F;
         }
 
         event.setAmount(damage);

@@ -1,6 +1,5 @@
 package net.shelmarow.nightfall_invade.assets;
 
-import yesman.epicfight.skill.SkillCategory;
 import yesman.epicfight.skill.SkillSlot;
 
 public enum NFISkillSlots implements SkillSlot {

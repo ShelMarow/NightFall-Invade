@@ -15,9 +15,9 @@
   "skill.epicfight.nfi_combat_art.category": "异界战技",
 
   "skill.nightfall_invade.blood_slash": "鲜血斩击",
-  "skill.nightfall_invade.blood_slash.tooltip": "释放五道无法防御和闪避的纵向斩击\n对沿途的所有敌人造成:\n [攻击力150% + 目标最大生命值5% + 目标生命值15%] 的伤害\n每命中一名敌人回复自身10%的生命值",
+  "skill.nightfall_invade.blood_slash.tooltip": "释放五道无法防御和闪避的纵向斩击\n对沿途的所有敌人造成:\n [攻击力150% + 目标最大生命值2% + 目标生命值4%] 的伤害\n每命中一名敌人回复自身10%的生命值",
   "skill.nightfall_invade.blood_boom": "鲜血飞弹",
-  "skill.nightfall_invade.blood_boom.tooltip": "释放10个鲜血飞弹，追踪目标攻击\n命中敌人时造成：\n[攻击力20% + 目标生命值6%] 的魔法伤害，并回复自身5%的生命值",
+  "skill.nightfall_invade.blood_boom.tooltip": "释放10个鲜血飞弹，追踪目标攻击\n命中敌人时造成：\n[攻击力20% + 目标生命值3%] 的魔法伤害，并回复自身5%的生命值",
 
   "creativetab.nightfall_invade.items": "夜幕入侵 物品",
   "item.nightfall_invade.arterius_spawn_egg": "亚尔特硫斯刷怪蛋",

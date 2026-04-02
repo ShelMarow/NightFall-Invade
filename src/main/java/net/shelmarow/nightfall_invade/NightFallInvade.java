@@ -22,10 +22,6 @@ import net.shelmarow.nightfall_invade.particle.NFIParticles;
 import net.shelmarow.nightfall_invade.structure.NFIStructureType;
 import org.slf4j.Logger;
 import yesman.epicfight.gameasset.Armatures;
-import yesman.epicfight.skill.SkillCategories;
-import yesman.epicfight.skill.SkillCategory;
-import yesman.epicfight.skill.SkillSlot;
-import yesman.epicfight.skill.SkillSlots;
 
 @Mod(NightFallInvade.MOD_ID)
 public class NightFallInvade {

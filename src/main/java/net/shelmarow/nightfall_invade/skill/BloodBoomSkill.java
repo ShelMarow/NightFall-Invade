@@ -13,7 +13,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.shelmarow.combat_evolution.effect.CEMobEffects;
-import net.shelmarow.nightfall_invade.assets.NFIAnimations;
 import net.shelmarow.nightfall_invade.assets.NFISkillCategories;
 import net.shelmarow.nightfall_invade.entity.misc.blood_bomb.BloodBoom;
 import yesman.epicfight.client.gui.BattleModeGui;
@@ -27,7 +26,7 @@ public class BloodBoomSkill extends Skill {
 
     public BloodBoomSkill(SkillBuilder<? extends Skill> builder) {
         super(builder.setCategory(NFISkillCategories.NFI_COMBAT_ART).setActivateType(ActivateType.TOGGLE).setResource(Resource.COOLDOWN));
-        this.consumption = 30;
+        this.consumption = 45;
         this.maxStackSize = 1;
     }
 

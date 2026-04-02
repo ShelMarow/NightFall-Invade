@@ -9,20 +9,23 @@ import net.minecraftforge.fml.common.Mod;
 import net.shelmarow.nightfall_invade.NightFallInvade;
 import net.shelmarow.nightfall_invade.entity.misc.blood_slash.BloodSlashEntity;
 import net.shelmarow.nightfall_invade.entity.misc.blood_slash.BloodSlashPatch;
-import yesman.epicfight.api.animation.*;
+import yesman.epicfight.api.animation.AnimationManager;
+import yesman.epicfight.api.animation.JointTransform;
 import yesman.epicfight.api.animation.property.AnimationEvent;
 import yesman.epicfight.api.animation.property.AnimationProperty;
 import yesman.epicfight.api.animation.property.MoveCoordFunctions;
-import yesman.epicfight.api.animation.types.*;
+import yesman.epicfight.api.animation.types.AttackAnimation;
+import yesman.epicfight.api.animation.types.LongHitAnimation;
+import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.collider.Collider;
 import yesman.epicfight.api.collider.MultiOBBCollider;
-import yesman.epicfight.api.utils.math.*;
+import yesman.epicfight.api.utils.math.OpenMatrix4f;
+import yesman.epicfight.api.utils.math.QuaternionUtils;
+import yesman.epicfight.api.utils.math.ValueModifier;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.particle.EpicFightParticles;
-import yesman.epicfight.world.capabilities.entitypatch.EntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
-import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 import yesman.epicfight.world.damagesource.EpicFightDamageTypeTags;
 import yesman.epicfight.world.damagesource.StunType;
 
@@ -94,11 +97,11 @@ public class NFIAnimations {
                             float yaw = entitypatch.getYRot();
                             double damage = entitypatch.getOriginal().getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.5;
                             entitypatch.playSound(EpicFightSounds.WHOOSH_SHARP.get(), 0,0);
-                            spawnBloodSlash(entitypatch, yaw + 24,0,0, damage, 0.05F, 0.15F);
-                            spawnBloodSlash(entitypatch, yaw + 12,0,0, damage, 0.05F, 0.15F);
-                            spawnBloodSlash(entitypatch, yaw +  0,0,0, damage, 0.05F, 0.15F);
-                            spawnBloodSlash(entitypatch, yaw - 12,0,0, damage, 0.05F, 0.15F);
-                            spawnBloodSlash(entitypatch, yaw - 24,0,0, damage, 0.05F, 0.15F);
+                            spawnBloodSlash(entitypatch, yaw + 24,0,0, damage, 0.02F, 0.04F);
+                            spawnBloodSlash(entitypatch, yaw + 12,0,0, damage, 0.02F, 0.04F);
+                            spawnBloodSlash(entitypatch, yaw +  0,0,0, damage, 0.02F, 0.04F);
+                            spawnBloodSlash(entitypatch, yaw - 12,0,0, damage, 0.02F, 0.04F);
+                            spawnBloodSlash(entitypatch, yaw - 24,0,0, damage, 0.02F, 0.04F);
                         }, AnimationEvent.Side.SERVER))
 
         );

@@ -9,6 +9,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -49,12 +50,14 @@ import net.shelmarow.nightfall_invade.NightFallInvade;
 import net.shelmarow.nightfall_invade.api.event.NFIFinalDamageEvent;
 import net.shelmarow.nightfall_invade.effect.NFIMobEffects;
 import org.jetbrains.annotations.NotNull;
+import yesman.epicfight.gameasset.EpicFightSounds;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
 
-import javax.annotation.Nullable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class ScarletHunter extends PathfinderMob {
@@ -64,8 +67,6 @@ public class ScarletHunter extends PathfinderMob {
             Component.empty().append(getDisplayName()).withStyle(ChatFormatting.DARK_RED,ChatFormatting.BOLD)
     );
 
-    private boolean shieldBossBarType = false;
-
     private final UUID bgmRequestUUID = UUID.randomUUID();
     private final CEMusicPacket ceMusicPacket;
     private boolean shouldPlayBGM = false;
@@ -73,7 +74,7 @@ public class ScarletHunter extends PathfinderMob {
 
     protected LivingEntityPatch<?> cePatch = null;
 
-    private static final EntityDataAccessor<Float> TRUE_HEALTH = SynchedEntityData.defineId(ScarletHunter.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<String> TRUE_HEALTH = SynchedEntityData.defineId(ScarletHunter.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Integer> BOSS_PHASE = SynchedEntityData.defineId(ScarletHunter.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> BLOOD_SHIELD = SynchedEntityData.defineId(ScarletHunter.class, EntityDataSerializers.BOOLEAN);
     private int phaseChangeCounter = -1;
@@ -91,9 +92,9 @@ public class ScarletHunter extends PathfinderMob {
     protected int totalHitCounter = 0;
     protected float totalDamageTaken = 0;
     //单次限伤
-    private final float DAMAGE_CAP = 0.04F;
+    private final float DAMAGE_CAP = 0.05F;
     //累计伤害达到多少时，减少达到最大值
-    private final float MAX_DAMAGE_TAKEN = 0.06F;
+    private final float MAX_DAMAGE_TAKEN = 0.07F;
     //减伤完全衰减时间
     private final int RESISTANCE_REDUCE_TIME = 160;
 
@@ -106,6 +107,9 @@ public class ScarletHunter extends PathfinderMob {
                 ResourceLocation.fromNamespaceAndPath(NightFallInvade.MOD_ID,"scarlet_hunter.bgm.blood_for_blood"),
                 SoundSource.RECORDS, 0.7F, 4680, true, true, 40, 40
         );
+        CompoundTag tag = ceBossEvent.getCustomData();
+        tag.putBoolean("bloodShield", false);
+        ceBossEvent.updateCustomData(tag);
     }
 
     private void setEquipment() {
@@ -133,7 +137,7 @@ public class ScarletHunter extends PathfinderMob {
                 .add(EpicFightAttributes.ARMOR_NEGATION.get(),0D)
                 .add(EpicFightAttributes.STUN_ARMOR.get(),20.0D)
                 .add(EpicFightAttributes.MAX_STRIKES.get(),100.0D)
-                .add(EpicFightAttributes.MAX_STAMINA.get(),80.0D)
+                .add(EpicFightAttributes.MAX_STAMINA.get(),60.0D)
                 .add(EpicFightAttributes.STAMINA_REGEN.get(),1.0D);
     }
 
@@ -150,7 +154,7 @@ public class ScarletHunter extends PathfinderMob {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(TRUE_HEALTH, 1F);
+        this.entityData.define(TRUE_HEALTH, "[1]");
         this.entityData.define(BOSS_PHASE, 0);
         this.entityData.define(BLOOD_SHIELD, false);
     }
@@ -230,7 +234,10 @@ public class ScarletHunter extends PathfinderMob {
                         setBloodShield(false);
                         setPhaseChangeCounter(-1);
                     }
-                    heal(getMaxHealth() * 0.05F);
+                    if(getHealth() < getMaxHealth()){
+                        heal(getMaxHealth() * 0.05F);
+                    }
+
                 }
             } else if(noTargetTime != 0){
                 noTargetTime = 0;
@@ -366,7 +373,22 @@ public class ScarletHunter extends PathfinderMob {
                 super.canBeAffected(pEffectInstance);
     }
 
-    @Nullable
+
+    @Override
+    protected void tickEffects() {
+        Set<MobEffectInstance> remove = new HashSet<>();
+        for (MobEffectInstance instance : getActiveEffects()){
+            if (!canBeAffected(instance)) {
+                remove.add(instance);
+            }
+        }
+        for (MobEffectInstance instance : remove){
+            removeEffect(instance.getEffect());
+        }
+        super.tickEffects();
+    }
+
+    @Override
     protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
         return hasBloodShield() ? SoundEvents.GLASS_BREAK : SoundEvents.GENERIC_HURT;
     }
@@ -377,11 +399,21 @@ public class ScarletHunter extends PathfinderMob {
     }
 
     @Override
+    public boolean killedEntity(@NotNull ServerLevel pLevel, @NotNull LivingEntity pEntity) {
+        if(cePatch != null){
+            BehaviorUtils.setRootCooldown(cePatch,"远距离惩罚剑气", 300, false);
+            BehaviorUtils.resetRootCooldown(cePatch,"远距离追击",  false);
+        }
+        return true;
+    }
+
+    @Override
     public boolean isInvulnerableTo(@NotNull DamageSource damageSource) {
         Entity attacker = damageSource.getEntity();
         if(damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)){
             if(attacker != null){
                 return true;
+
             }
         }
         //免疫远距离的攻击
@@ -397,11 +429,8 @@ public class ScarletHunter extends PathfinderMob {
 
     @Override
     public boolean hurt(@NotNull DamageSource pSource, float pAmount) {
-        if(pSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && pAmount < getMaxHealth()){
-            return false;
-        }
         if(!pSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && phaseChangeCounter != -1){
-             return false;
+            return false;
         }
         return super.hurt(pSource, pAmount);
     }
@@ -409,9 +438,7 @@ public class ScarletHunter extends PathfinderMob {
     @Override
     public void actuallyHurt(@NotNull DamageSource pDamageSource, float originalDamage) {
         if (!this.isInvulnerableTo(pDamageSource)) {
-
             noTargetTime = 0;
-
             //Hurt事件伤害修改
             originalDamage = ForgeHooks.onLivingHurt(this, pDamageSource, originalDamage);
             if (originalDamage <= 0) return;
@@ -475,28 +502,31 @@ public class ScarletHunter extends PathfinderMob {
 
             //限制最高处决伤害
             if(pDamageSource.is(CEDamageTypeTags.EXECUTION) && !pDamageSource.is(CEDamageTypeTags.EXECUTION_FINISHED)){
-                damage = Math.min(damage, getMaxHealth() * 0.05F);
+                damage = Math.min(damage, getMaxHealth() * 0.08F);
             }
             else if(pDamageSource.is(CEDamageTypeTags.EXECUTION_FINISHED)){
-                damage = Math.min(damage, getMaxHealth() * 0.15F);
+                damage = Math.min(damage, getMaxHealth() * 0.17F);
             }
 
             //转阶段锁血
             if(!pDamageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)){
+                //拥有血盾的情况下伤害降低100%
+                if(hasBloodShield() || phaseChangeCounter != -1){
+                    damage = 0;
+                }
+
                 int bossPhase = getBossPhase();
                 //65%血量转阶段
                 if(bossPhase == 0 && getHealth() - damage < getMaxHealth() * 0.65F){
                     //限制伤害不超过血量65%
-                    damage = getHealth() - getMaxHealth() * 0.65F;
+                    damage = Math.max(getHealth() - getMaxHealth() * 0.65F, 0);
+                    if(getHealth() < getMaxHealth() * 0.65F){
+                        setTrueHealth(getMaxHealth() * 0.65F);
+                    }
                     if(getPhaseChangeCounter() == -1){
                         //等待转阶段
                         onPhaseChange();
                     }
-                }
-
-                //拥有血盾的情况下伤害降低100%
-                if(hasBloodShield() || phaseChangeCounter != -1){
-                    damage = 0;
                 }
             }
 
@@ -517,6 +547,7 @@ public class ScarletHunter extends PathfinderMob {
     private void onPhaseChange() {
         if(getBossPhase() == 0){
             this.phaseChangeCounter = 6000;
+            this.bloodShieldCooldown = 0;
             BehaviorUtils.stopCurrentBehavior(this);
             if(cePatch != null && CEPatchUtils.getStaminaStatus(cePatch) != StaminaStatus.BREAK){
                 setCanBypassStunImmunity(true);
@@ -567,7 +598,7 @@ public class ScarletHunter extends PathfinderMob {
 
     @Override
     public boolean isAlive() {
-        return  !this.isRemoved() && this.getTrueHealth() > 0.0F;
+        return !this.isRemoved() && this.getTrueHealth() > 0.0F;
     }
 
     @Override
@@ -577,6 +608,7 @@ public class ScarletHunter extends PathfinderMob {
 
     @Override
     public void die(@NotNull DamageSource pDamageSource) {
+        playSound(EpicFightSounds.EVISCERATE.get(), 1.0F, 1.0F);
         super.die(pDamageSource);
         if(!level().isClientSide()){
             broadcastToNearbyPlayers(
@@ -600,12 +632,18 @@ public class ScarletHunter extends PathfinderMob {
     }
 
     public void setTrueHealth(float pHealth) {
-        this.entityData.set(TRUE_HEALTH, Mth.clamp(pHealth, 0.0F, this.getMaxHealth()));
+        this.entityData.set(TRUE_HEALTH, "[" +
+                Float.toString(Mth.clamp(pHealth, 0.0F, this.getMaxHealth()) * 100 + this.getMaxHealth() * 100)
+                        .replace('.', 'x')
+                + "]"
+        );
         this.setHealth(pHealth);
     }
 
     public float getTrueHealth() {
-        return this.entityData.get(TRUE_HEALTH);
+        return (Float.parseFloat(this.entityData.get(TRUE_HEALTH)
+                .replace('x','.').replace('[',' ').replace(']',' '))
+                - this.getMaxHealth() * 100) / 100;
     }
 
     public void setBossPhase(int phase) {
@@ -618,6 +656,9 @@ public class ScarletHunter extends PathfinderMob {
 
     public void setBloodShield(boolean bloodShield) {
         entityData.set(BLOOD_SHIELD, bloodShield);
+        CompoundTag tag = ceBossEvent.getCustomData();
+        tag.putBoolean("bloodShield", bloodShield);
+        ceBossEvent.updateCustomData(tag);
     }
 
     public boolean hasBloodShield() {

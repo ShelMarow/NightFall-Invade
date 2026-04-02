@@ -11,7 +11,6 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -20,19 +19,18 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
 import net.shelmarow.combat_evolution.ai.StaminaStatus;
 import net.shelmarow.combat_evolution.ai.util.CEPatchUtils;
-import net.shelmarow.combat_evolution.damage_source.CEDamageTypes;
 import net.shelmarow.combat_evolution.effect.CEStunImmunityEffect;
 import net.shelmarow.nightfall_invade.assets.NFIAnimations;
 import net.shelmarow.nightfall_invade.entity.blood_hunter.ai.ScarletHunterAI;
 import yesman.epicfight.api.animation.AnimationManager;
 import yesman.epicfight.api.animation.LivingMotions;
-import yesman.epicfight.api.animation.types.ActionAnimation;
 import yesman.epicfight.api.animation.types.EntityState;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.asset.AssetAccessor;
@@ -55,6 +53,7 @@ public class ScarletHunterPatch extends CEHumanoidPatch<ScarletHunter> {
     public ScarletHunterPatch() {
         super(Factions.NEUTRAL);
         this.chasingSpeed = 1.35F;
+        this.breakTime = 80;
     }
 
     @Override
@@ -81,13 +80,13 @@ public class ScarletHunterPatch extends CEHumanoidPatch<ScarletHunter> {
             scarletHunter.setBloodShield(false);
             scarletHunter.setBloodShieldCooldown(2400);
             //破防受到伤害
-            if(damageSource != null && damageSource.getEntity() instanceof LivingEntity living){
+            if(damageSource != null && damageSource.getEntity() instanceof LivingEntity){
                 scarletHunter.totalDamageTaken = 0;
                 scarletHunter.totalHitCounter = 0;
 
                 float damageAmount = scarletHunter.getMaxHealth() * 0.15F;
                 if(scarletHunter.getHealth() <= damageAmount){
-                    damageAmount = scarletHunter.getHealth() - 0.01F;
+                    damageAmount = scarletHunter.getHealth() - 1F;
                 }
 
                 scarletHunter.hurt(
@@ -177,8 +176,13 @@ public class ScarletHunterPatch extends CEHumanoidPatch<ScarletHunter> {
 
 
     public boolean dealStaminaDamage(DamageSource damageSource, float amount) {
-        if(damageSource != null && amount >= CEPatchUtils.getMaxStamina(this) * 0.2F){
-            amount *= 0.25F;
+        if(damageSource != null){
+            if(damageSource.getDirectEntity() instanceof AbstractArrow){
+                amount = 0;
+            }
+            if(amount >= CEPatchUtils.getMaxStamina(this) * 0.2F){
+                amount *= 0.25F;
+            }
         }
 
         return super.dealStaminaDamage(damageSource, amount);

@@ -117,7 +117,7 @@ public class BloodSlashEntity extends Mob {
             });
 
             if(owner != null){
-                float healPercent = 0.02F;
+                float healPercent = 0.01F;
                 if(owner instanceof Player){
                     healPercent = 0.1F;
                 }

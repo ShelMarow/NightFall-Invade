@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.LerpingBossEvent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
@@ -105,7 +104,7 @@ public class BossBarRenderEvent {
                     330,21
             );
 
-            if(bossData.displayType.equals("[NightFallInvade:ScarletHunter_BloodShield]")){
+            if(bossData.customData.contains("bloodShield") && bossData.customData.getBoolean("bloodShield")){
                 long t = System.currentTimeMillis() % 6400;
                 //绘制血盾图层
                 guiGraphics.blit(
@@ -116,9 +115,6 @@ public class BossBarRenderEvent {
                         64,32
                 );
             }
-
-
-
 
             //耐力 38 + 254 + 38
             if(bossData.staminaStatus != StaminaStatus.BREAK) {
