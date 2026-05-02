@@ -66,6 +66,7 @@ public class ScarletHunter extends PathfinderMob {
             "[NightFallInvade:ScarletHunter]",
             Component.empty().append(getDisplayName()).withStyle(ChatFormatting.DARK_RED,ChatFormatting.BOLD)
     );
+    private int bossBarVisibleTick = 0;
 
     private final UUID bgmRequestUUID = UUID.randomUUID();
     private final CEMusicPacket ceMusicPacket;
@@ -100,6 +101,7 @@ public class ScarletHunter extends PathfinderMob {
 
     public ScarletHunter(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+        this.xpReward = 2000;
         setTrueHealth(getMaxHealth());
         this.setEquipment();
         ceMusicPacket = new CEMusicPacket(
@@ -110,6 +112,7 @@ public class ScarletHunter extends PathfinderMob {
         CompoundTag tag = ceBossEvent.getCustomData();
         tag.putBoolean("bloodShield", false);
         ceBossEvent.updateCustomData(tag);
+        ceBossEvent.setVisible(false);
     }
 
     private void setEquipment() {
@@ -145,7 +148,7 @@ public class ScarletHunter extends PathfinderMob {
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class,12));
         this.goalSelector.addGoal(2, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        //this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 
         this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
@@ -202,6 +205,35 @@ public class ScarletHunter extends PathfinderMob {
         super.tick();
 
         if(!level().isClientSide){
+
+            //失去目标10秒后，如果没有玩家能看到该BOSS，则隐藏血条
+            if(ceBossEvent.isVisible() && getTarget() == null){
+                if(++bossBarVisibleTick >= 200){
+                    bossBarVisibleTick = 0;
+                    boolean disable = true;
+                    for (ServerPlayer player : ceBossEvent.getPlayers()) {
+                        if (hasLineOfSight(player)) {
+                            disable = false;
+                            break;
+                        }
+                    }
+
+                    if(disable){
+                        ceBossEvent.setVisible(false);
+                    }
+                }
+            }
+            else if (bossBarVisibleTick > 0) {
+                bossBarVisibleTick = 0;
+            }
+            if(!ceBossEvent.isVisible()) {
+                for (ServerPlayer player : ceBossEvent.getPlayers()) {
+                    if (distanceToSqr(player) <= 64 * 64 && hasLineOfSight(player)) {
+                        ceBossEvent.setVisible(true);
+                        break;
+                    }
+                }
+            }
 
             if(getTarget() != null && !shouldPlayBGM){
                 removeBGMWaitTime = 0;

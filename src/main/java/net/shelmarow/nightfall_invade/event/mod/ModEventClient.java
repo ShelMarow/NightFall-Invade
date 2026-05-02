@@ -1,5 +1,6 @@
 package net.shelmarow.nightfall_invade.event.mod;
 
+import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
@@ -9,10 +10,12 @@ import net.shelmarow.nightfall_invade.NightFallInvade;
 import net.shelmarow.nightfall_invade.entity.NFIEntities;
 import net.shelmarow.nightfall_invade.entity.blood_hunter.client.PScarletHunterRenderer;
 import net.shelmarow.nightfall_invade.entity.blood_hunter.client.ScarletHunterRenderer;
+import net.shelmarow.nightfall_invade.entity.fallen_knight.client.FallenKnightRenderer;
+import net.shelmarow.nightfall_invade.entity.fallen_knight.client.PFallenKnightRenderer;
 import net.shelmarow.nightfall_invade.entity.misc.blood_bomb.client.BloodBoomRenderer;
 import net.shelmarow.nightfall_invade.entity.misc.blood_slash.BloodSlashRenderer;
 import net.shelmarow.nightfall_invade.entity.misc.blood_slash.PBloodSlashRenderer;
-import net.shelmarow.nightfall_invade.entity.spear_knight.client.ArteriusRenderer;
+import net.shelmarow.nightfall_invade.entity.arterius.client.ArteriusRenderer;
 import net.shelmarow.nightfall_invade.particle.NFIParticles;
 import net.shelmarow.nightfall_invade.particle.particles.BloodParticleA;
 import net.shelmarow.nightfall_invade.particle.particles.BloodParticleB;
@@ -34,6 +37,7 @@ public class ModEventClient {
     public static void rendererRegister(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(NFIEntities.ARTERIUS.get(), ArteriusRenderer::new);
         event.registerEntityRenderer(NFIEntities.SCARLET_HUNTER.get(), ScarletHunterRenderer::new);
+        event.registerEntityRenderer(NFIEntities.FALLEN_KNIGHT.get(), FallenKnightRenderer::new);
         event.registerEntityRenderer(NFIEntities.BLOOD_BOOM.get(), BloodBoomRenderer::new);
         event.registerEntityRenderer(NFIEntities.BLOOD_SLASH.get(), BloodSlashRenderer::new);
     }
@@ -46,6 +50,10 @@ public class ModEventClient {
 
         event.addPatchedEntityRenderer(NFIEntities.SCARLET_HUNTER.get(),
                 entityType -> new PScarletHunterRenderer(Meshes.BIPED_OLD_TEX, event.getContext(), entityType)
+                        .initLayerLast(event.getContext(), entityType));
+
+        event.addPatchedEntityRenderer(NFIEntities.FALLEN_KNIGHT.get(),
+                entityType -> new PFallenKnightRenderer(Meshes.BIPED_OLD_TEX, event.getContext(), entityType)
                         .initLayerLast(event.getContext(), entityType));
 
         event.addPatchedEntityRenderer(NFIEntities.BLOOD_SLASH.get(),

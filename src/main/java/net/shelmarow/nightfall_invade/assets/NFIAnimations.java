@@ -6,6 +6,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.shelmarow.combat_evolution.gameassets.animation.ExecutionHitAnimation;
 import net.shelmarow.nightfall_invade.NightFallInvade;
 import net.shelmarow.nightfall_invade.entity.misc.blood_slash.BloodSlashEntity;
 import net.shelmarow.nightfall_invade.entity.misc.blood_slash.BloodSlashPatch;
@@ -40,6 +41,8 @@ public class NFIAnimations {
     public static AnimationManager.AnimationAccessor<AttackAnimation> SHOOT;
 
     public static AnimationManager.AnimationAccessor<AttackAnimation> BLOOD_SLASH_ATTACK;
+
+    public static AnimationManager.AnimationAccessor<ExecutionHitAnimation> BIPED_EXECUTED;
 
 
     public static final Collider BLOOD_SLASH =
@@ -105,6 +108,9 @@ public class NFIAnimations {
                         }, AnimationEvent.Side.SERVER))
 
         );
+
+        BIPED_EXECUTED = builder.nextAccessor("biped/hit/executed", accessor ->
+                new ExecutionHitAnimation(0.01F, accessor, Armatures.BIPED));
     }
 
     public static final AnimationProperty.PoseModifier ROOT_X_MODIFIER = (self, pose, entitypatch, time, partialTicks) -> {

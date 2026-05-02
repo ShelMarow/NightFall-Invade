@@ -1,4 +1,4 @@
-package net.shelmarow.nightfall_invade.entity.spear_knight;
+package net.shelmarow.nightfall_invade.entity.arterius;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;

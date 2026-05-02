@@ -24,7 +24,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.shelmarow.nightfall_invade.NightFallInvade;
 import net.shelmarow.nightfall_invade.entity.NFIEntities;
-import net.shelmarow.nightfall_invade.entity.spear_knight.Arterius;
+import net.shelmarow.nightfall_invade.entity.arterius.Arterius;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -32,9 +32,9 @@ import java.util.Map;
 import java.util.Optional;
 
 public class GateOfDisaster extends Structure {
-    public static final ResourceLocation GATE_OF_DISASTER_P1 = ResourceLocation.fromNamespaceAndPath(NightFallInvade.MOD_ID, "gate_of_disaster_part1");
-    public static final ResourceLocation GATE_OF_DISASTER_P2 = ResourceLocation.fromNamespaceAndPath(NightFallInvade.MOD_ID, "gate_of_disaster_part2");
-    public static final ResourceLocation GATE_OF_DISASTER_P3 = ResourceLocation.fromNamespaceAndPath(NightFallInvade.MOD_ID, "gate_of_disaster_part3");
+    public static final ResourceLocation GATE_OF_DISASTER_P1 = ResourceLocation.fromNamespaceAndPath(NightFallInvade.MOD_ID, "gate_of_disaster/gate_of_disaster_part1");
+    public static final ResourceLocation GATE_OF_DISASTER_P2 = ResourceLocation.fromNamespaceAndPath(NightFallInvade.MOD_ID, "gate_of_disaster/gate_of_disaster_part2");
+    public static final ResourceLocation GATE_OF_DISASTER_P3 = ResourceLocation.fromNamespaceAndPath(NightFallInvade.MOD_ID, "gate_of_disaster/gate_of_disaster_part3");
     public static final Codec<GateOfDisaster> CODEC = simpleCodec(GateOfDisaster::new);
     private static final Map<ResourceLocation, BlockPos> OFFSET = new HashMap<>();
 
@@ -90,13 +90,15 @@ public class GateOfDisaster extends Structure {
             }
         }
 
-        return onTopOfChunkCenter(context, Heightmap.Types.WORLD_SURFACE_WG, (builder) -> generatePieces(builder,context,rotation));
+        return onTopOfChunkCenter(context, Heightmap.Types.WORLD_SURFACE_WG, (builder) -> generatePieces(builder,context, rotation));
     }
 
     @Override
     public @NotNull StructureType<?> type() {
         return NFIStructureType.GATE_OF_DISASTER.get();
     }
+
+
     public static void start(StructureTemplateManager templateManager, BlockPos pos, Rotation rotation, StructurePieceAccessor pieceList, RandomSource random) {
         int x = pos.getX();
         int z = pos.getZ();
@@ -144,14 +146,15 @@ public class GateOfDisaster extends Structure {
             return pos.offset(OFFSET.get(location));
         }
 
-        protected void addAdditionalSaveData(StructurePieceSerializationContext pContext, CompoundTag tagCompound) {
+        @Override
+        protected void addAdditionalSaveData(@NotNull StructurePieceSerializationContext pContext, @NotNull CompoundTag tagCompound) {
             super.addAdditionalSaveData(pContext, tagCompound);
             tagCompound.putString("Rot", this.placeSettings.getRotation().name());
         }
 
 
         @Override
-        public void postProcess(WorldGenLevel level, StructureManager manager, ChunkGenerator generator, RandomSource random, BoundingBox box, ChunkPos chunkPos, BlockPos pos) {
+        public void postProcess(@NotNull WorldGenLevel level, @NotNull StructureManager manager, @NotNull ChunkGenerator generator, @NotNull RandomSource random, @NotNull BoundingBox box, @NotNull ChunkPos chunkPos, @NotNull BlockPos pos) {
             super.postProcess(level, manager, generator, random, box, chunkPos, pos);
             BoundingBox pieceBox = this.getBoundingBox();
             int minX = pieceBox.minX();

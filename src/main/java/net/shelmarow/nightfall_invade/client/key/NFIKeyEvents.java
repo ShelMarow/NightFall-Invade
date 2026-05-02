@@ -14,6 +14,7 @@ import yesman.epicfight.network.client.CPSkillRequest;
 import yesman.epicfight.skill.SkillSlot;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 
+
 @Mod.EventBusSubscriber(modid = NightFallInvade.MOD_ID,bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class NFIKeyEvents {
 
@@ -21,14 +22,11 @@ public class NFIKeyEvents {
     public static void onClientTick(TickEvent.ClientTickEvent event) {
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer localPlayer = mc.player;
-        if (event.phase == TickEvent.Phase.END && localPlayer != null) {
+        if (localPlayer != null) {
             if(NFIKeyMappings.NFI_SKILL.isDown()){
                 LocalPlayerPatch playerPatch = EpicFightCapabilities.getLocalPlayerPatch(localPlayer);
                 if(playerPatch != null && playerPatch.getSkill(NFISkillSlots.NFI_COMBAT_ART1).hasSkill()){
-                    CPSkillRequest packet = new CPSkillRequest(
-                            SkillSlot.ENUM_MANAGER.get(NFISkillSlots.NFI_COMBAT_ART1.universalOrdinal()),
-                            CPSkillRequest.WorkType.CAST
-                    );
+                    CPSkillRequest packet = new CPSkillRequest(SkillSlot.ENUM_MANAGER.get(NFISkillSlots.NFI_COMBAT_ART1.universalOrdinal()));
                     EpicFightNetworkManager.sendToServer(packet);
                 }
             }

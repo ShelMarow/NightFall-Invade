@@ -19,6 +19,7 @@ public class NFICreativeTab {
 
                 output.accept(NFIItems.ARTERIUS_SPAWN_EGG.get());
                 output.accept(NFIItems.SCARLET_HUNTER_SPAWN_EGG.get());
+                output.accept(NFIItems.FALLEN_KNIGHT_SPAWN_EGG.get());
                 output.accept(NFIItems.DISASTER_FRAGMENT_RED.get());
 
             }).build());

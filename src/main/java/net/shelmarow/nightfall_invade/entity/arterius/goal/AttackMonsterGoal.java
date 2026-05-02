@@ -1,4 +1,4 @@
-package net.shelmarow.nightfall_invade.entity.spear_knight.goal;
+package net.shelmarow.nightfall_invade.entity.arterius.goal;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;

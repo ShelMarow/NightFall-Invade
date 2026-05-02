@@ -1,4 +1,4 @@
-package net.shelmarow.nightfall_invade.entity.spear_knight.ai;
+package net.shelmarow.nightfall_invade.entity.arterius.ai;
 
 import com.github.L_Ender.cataclysm.entity.effect.Flame_Strike_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Flame_Jet_Entity;
@@ -35,7 +35,7 @@ import net.shelmarow.combat_evolution.ai.util.CEPatchUtils;
 import net.shelmarow.combat_evolution.client.particle.CEParticles;
 import net.shelmarow.combat_evolution.client.particle.follow.CEFollowParticleOptions;
 import net.shelmarow.combat_evolution.effect.CEMobEffects;
-import net.shelmarow.nightfall_invade.entity.spear_knight.Arterius;
+import net.shelmarow.nightfall_invade.entity.arterius.Arterius;
 import net.shelmarow.nightfall_invade.utils.EntityUtils;
 import org.jetbrains.annotations.NotNull;
 import yesman.epicfight.gameasset.Animations;

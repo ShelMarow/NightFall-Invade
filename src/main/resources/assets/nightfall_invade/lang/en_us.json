@@ -3,6 +3,8 @@
   "entity.nightfall_invade.arterius_hard": "<Lord Of Flame - Arterius(WIP)>",
   "entity.nightfall_invade.scarlet_hunter": "<Scarlet Hunter - Brad>",
 
+  "entity.nightfall_invade.fallen_knight": "Fallen Knight",
+
   "boss_bar.nightfall_invade.arterius": "<Arterius>",
   "boss_bar.nightfall_invade.arterius_hard": "<Flame Lord(WIP)>",
 
@@ -23,6 +25,7 @@
   "creativetab.nightfall_invade.items": "NightFall Invade Items",
   "item.nightfall_invade.arterius_spawn_egg": "Arterius spawn egg",
   "item.nightfall_invade.scarlet_hunter_spawn_egg": "Scarlet Hunter spawn egg",
+  "item.nightfall_invade.fallen_knight_spawn_egg": "Fallen Knight spawn egg",
   "item.nightfall_invade.disaster_fragment_red": "Disaster Fragment - Red",
 
   "structure.nightfall_invade.gate_of_disaster": "Gate Of Disaster",

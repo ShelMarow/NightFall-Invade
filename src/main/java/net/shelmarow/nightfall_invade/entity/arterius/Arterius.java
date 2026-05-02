@@ -1,4 +1,4 @@
-package net.shelmarow.nightfall_invade.entity.spear_knight;
+package net.shelmarow.nightfall_invade.entity.arterius;
 
 import com.github.L_Ender.cataclysm.entity.effect.Flame_Strike_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Ignis_Abyss_Fireball_Entity;
@@ -52,8 +52,8 @@ import net.shelmarow.combat_evolution.damage_source.CEDamageTypeTags;
 import net.shelmarow.nightfall_invade.NightFallInvade;
 import net.shelmarow.nightfall_invade.api.event.NFIFinalDamageEvent;
 import net.shelmarow.nightfall_invade.config.boss.BossConfig;
-import net.shelmarow.nightfall_invade.entity.spear_knight.ai.ArteriusAI;
-import net.shelmarow.nightfall_invade.entity.spear_knight.goal.AttackMonsterGoal;
+import net.shelmarow.nightfall_invade.entity.arterius.ai.ArteriusAI;
+import net.shelmarow.nightfall_invade.entity.arterius.goal.AttackMonsterGoal;
 import org.jetbrains.annotations.NotNull;
 import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributes;
@@ -97,6 +97,7 @@ public class Arterius extends PathfinderMob {
 
     public Arterius(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+        this.xpReward = 1500;
         this.setPersistenceRequired();
         this.setEquipment();
         bossEvent.setDisplayType("[NightFallInvade:Arterius]");

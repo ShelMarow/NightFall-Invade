@@ -1,4 +1,4 @@
-package net.shelmarow.nightfall_invade.entity.spear_knight;
+package net.shelmarow.nightfall_invade.entity.arterius;
 
 import com.google.common.collect.ImmutableMap;
 import com.hm.efn.gameasset.animations.EFNDodgeAnimations;
@@ -25,7 +25,7 @@ import net.shelmarow.combat_evolution.ai.util.CEPatchUtils;
 import net.shelmarow.combat_evolution.effect.CEMobEffects;
 import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
 import net.shelmarow.nightfall_invade.config.boss.BossConfig;
-import net.shelmarow.nightfall_invade.entity.spear_knight.ai.ArteriusAI;
+import net.shelmarow.nightfall_invade.entity.arterius.ai.ArteriusAI;
 import yesman.epicfight.api.animation.AnimationManager;
 import yesman.epicfight.api.animation.Animator;
 import yesman.epicfight.api.animation.LivingMotions;

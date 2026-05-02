@@ -13,12 +13,17 @@ import net.shelmarow.combat_evolution.ai.StaminaStatus;
 import net.shelmarow.combat_evolution.bossbar.BossData;
 import net.shelmarow.combat_evolution.bossbar.ClientBossData;
 import net.shelmarow.nightfall_invade.NightFallInvade;
+import net.shelmarow.nightfall_invade.config.client.ClientConfig;
 
 @Mod.EventBusSubscriber(modid = NightFallInvade.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE,value = Dist.CLIENT)
 public class BossBarRenderEvent {
 
     @SubscribeEvent
     public static void onBossBarRender(CustomizeGuiOverlayEvent.BossEventProgress event) {
+        if(!ClientConfig.ENABLE_CUSTOM_BOSS_BAR.get()){
+            return;
+        }
+
         LerpingBossEvent boss = event.getBossEvent();
 
         Minecraft mc = Minecraft.getInstance();

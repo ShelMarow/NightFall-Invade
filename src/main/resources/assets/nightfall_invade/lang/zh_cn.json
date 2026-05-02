@@ -3,6 +3,8 @@
   "entity.nightfall_invade.arterius_hard": "<烈焰主宰 - 亚尔特硫斯（未完工）>",
   "entity.nightfall_invade.scarlet_hunter": "<赤色猎手-布莱德>",
 
+  "entity.nightfall_invade.fallen_knight": "堕落骑士",
+
   "boss_bar.nightfall_invade.arterius": "<亚尔特硫斯>",
   "boss_bar.nightfall_invade.arterius_hard": "<烈焰主宰（未完工）>",
 
@@ -22,6 +24,7 @@
   "creativetab.nightfall_invade.items": "夜幕入侵 物品",
   "item.nightfall_invade.arterius_spawn_egg": "亚尔特硫斯刷怪蛋",
   "item.nightfall_invade.scarlet_hunter_spawn_egg": "赤色猎手刷怪蛋",
+  "item.nightfall_invade.fallen_knight_spawn_egg": "堕落骑士刷怪蛋",
   "item.nightfall_invade.disaster_fragment_red": "灾厄碎片-红",
 
   "structure.nightfall_invade.gate_of_disaster": "灾厄之门",

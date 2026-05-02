@@ -19,6 +19,9 @@ public class NFIItems {
     public static final RegistryObject<SpawnEggItem> SCARLET_HUNTER_SPAWN_EGG = ITEMS.register("scarlet_hunter_spawn_egg", () ->
             new ForgeSpawnEggItem(NFIEntities.SCARLET_HUNTER, 0x6E0B14, 0xC1121F, new Item.Properties()));
 
+    public static final RegistryObject<SpawnEggItem> FALLEN_KNIGHT_SPAWN_EGG = ITEMS.register("fallen_knight_spawn_egg", () ->
+            new ForgeSpawnEggItem(NFIEntities.FALLEN_KNIGHT, 0x5D3A1A, 0x8B5E3C, new Item.Properties()));
+
     public static final RegistryObject<Item> DISASTER_FRAGMENT_RED = ITEMS.register("disaster_fragment_red", () ->
             new Item(new Item.Properties().fireResistant().rarity(Rarity.EPIC)));
 }
