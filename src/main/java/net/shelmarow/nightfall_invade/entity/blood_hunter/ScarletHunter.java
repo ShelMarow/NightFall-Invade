@@ -665,7 +665,7 @@ public class ScarletHunter extends PathfinderMob {
 
     public void setTrueHealth(float pHealth) {
         this.entityData.set(TRUE_HEALTH, "[" +
-                Float.toString(Mth.clamp(pHealth, 0.0F, this.getMaxHealth()) * 100 + this.getMaxHealth() * 100)
+                Float.toString(Mth.clamp(pHealth, 0.0F, this.getMaxHealth()) * 100 + 11700)
                         .replace('.', 'x')
                 + "]"
         );
@@ -675,7 +675,7 @@ public class ScarletHunter extends PathfinderMob {
     public float getTrueHealth() {
         return (Float.parseFloat(this.entityData.get(TRUE_HEALTH)
                 .replace('x','.').replace('[',' ').replace(']',' '))
-                - this.getMaxHealth() * 100) / 100;
+                - 11700) / 100;
     }
 
     public void setBossPhase(int phase) {
