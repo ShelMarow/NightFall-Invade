@@ -1,6 +1,5 @@
 package net.shelmarow.nightfall_invade.event.mod;
 
-import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
@@ -8,8 +7,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.shelmarow.nightfall_invade.NightFallInvade;
 import net.shelmarow.nightfall_invade.entity.NFIEntities;
-import net.shelmarow.nightfall_invade.entity.blood_hunter.client.PScarletHunterRenderer;
-import net.shelmarow.nightfall_invade.entity.blood_hunter.client.ScarletHunterRenderer;
+import net.shelmarow.nightfall_invade.entity.scarlet_hunter.client.PScarletHunterRenderer;
+import net.shelmarow.nightfall_invade.entity.scarlet_hunter.client.ScarletHunterRenderer;
 import net.shelmarow.nightfall_invade.entity.fallen_knight.client.FallenKnightRenderer;
 import net.shelmarow.nightfall_invade.entity.fallen_knight.client.PFallenKnightRenderer;
 import net.shelmarow.nightfall_invade.entity.misc.blood_bomb.client.BloodBoomRenderer;

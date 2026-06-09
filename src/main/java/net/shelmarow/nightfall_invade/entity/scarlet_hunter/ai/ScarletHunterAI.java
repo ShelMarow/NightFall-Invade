@@ -1,4 +1,4 @@
-package net.shelmarow.nightfall_invade.entity.blood_hunter.ai;
+package net.shelmarow.nightfall_invade.entity.scarlet_hunter.ai;
 
 import com.asanginxst.epicfightx.gameassets.animations.AnimationsX;
 import com.asanginxst.epicfightx.gameassets.animations.ExtraAnimations;
@@ -35,8 +35,8 @@ import net.shelmarow.combat_evolution.ai.util.CEParticleUtils;
 import net.shelmarow.combat_evolution.ai.util.CEPatchUtils;
 import net.shelmarow.combat_evolution.client.particle.CEParticles;
 import net.shelmarow.combat_evolution.effect.CEMobEffects;
-import net.shelmarow.nightfall_invade.entity.blood_hunter.ScarletHunter;
-import net.shelmarow.nightfall_invade.entity.blood_hunter.ScarletHunterPatch;
+import net.shelmarow.nightfall_invade.entity.scarlet_hunter.ScarletHunter;
+import net.shelmarow.nightfall_invade.entity.scarlet_hunter.ScarletHunterPatch;
 import net.shelmarow.nightfall_invade.entity.misc.blood_bomb.BloodBoom;
 import net.shelmarow.nightfall_invade.entity.misc.blood_slash.BloodSlashEntity;
 import net.shelmarow.nightfall_invade.particle.NFIParticles;

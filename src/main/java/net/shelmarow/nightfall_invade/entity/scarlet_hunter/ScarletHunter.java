@@ -1,4 +1,4 @@
-package net.shelmarow.nightfall_invade.entity.blood_hunter;
+package net.shelmarow.nightfall_invade.entity.scarlet_hunter;
 
 import com.asanginxst.epicfightx.gameassets.animations.AnimationsX;
 import com.hm.efn.registries.EFNItem;
@@ -26,7 +26,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;

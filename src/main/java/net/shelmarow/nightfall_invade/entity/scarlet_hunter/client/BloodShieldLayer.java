@@ -1,4 +1,4 @@
-package net.shelmarow.nightfall_invade.entity.blood_hunter.client;
+package net.shelmarow.nightfall_invade.entity.scarlet_hunter.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.HumanoidModel;
@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.shelmarow.nightfall_invade.NightFallInvade;
-import net.shelmarow.nightfall_invade.entity.blood_hunter.ScarletHunter;
+import net.shelmarow.nightfall_invade.entity.scarlet_hunter.ScarletHunter;
 import org.jetbrains.annotations.NotNull;
 
 public class BloodShieldLayer extends RenderLayer<ScarletHunter, HumanoidModel<ScarletHunter>> {

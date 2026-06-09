@@ -10,8 +10,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.shelmarow.nightfall_invade.NightFallInvade;
-import net.shelmarow.nightfall_invade.entity.blood_hunter.ScarletHunter;
-import net.shelmarow.nightfall_invade.entity.blood_hunter.client.BloodShieldLayer;
 import net.shelmarow.nightfall_invade.entity.fallen_knight.FallenKnight;
 import org.jetbrains.annotations.NotNull;
 

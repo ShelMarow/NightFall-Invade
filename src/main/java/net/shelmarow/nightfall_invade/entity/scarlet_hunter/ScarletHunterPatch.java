@@ -1,4 +1,4 @@
-package net.shelmarow.nightfall_invade.entity.blood_hunter;
+package net.shelmarow.nightfall_invade.entity.scarlet_hunter;
 
 import com.asanginxst.epicfightx.gameassets.animations.AnimationsX;
 import com.google.common.collect.ImmutableMap;
@@ -28,7 +28,7 @@ import net.shelmarow.combat_evolution.ai.StaminaStatus;
 import net.shelmarow.combat_evolution.ai.util.CEPatchUtils;
 import net.shelmarow.combat_evolution.effect.CEStunImmunityEffect;
 import net.shelmarow.nightfall_invade.assets.NFIAnimations;
-import net.shelmarow.nightfall_invade.entity.blood_hunter.ai.ScarletHunterAI;
+import net.shelmarow.nightfall_invade.entity.scarlet_hunter.ai.ScarletHunterAI;
 import yesman.epicfight.api.animation.AnimationManager;
 import yesman.epicfight.api.animation.LivingMotions;
 import yesman.epicfight.api.animation.types.EntityState;

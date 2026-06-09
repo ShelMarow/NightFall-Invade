@@ -1,4 +1,4 @@
-package net.shelmarow.nightfall_invade.entity.blood_hunter.client;
+package net.shelmarow.nightfall_invade.entity.scarlet_hunter.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -8,8 +8,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.shelmarow.nightfall_invade.NightFallInvade;
-import net.shelmarow.nightfall_invade.entity.blood_hunter.ScarletHunter;
-import net.shelmarow.nightfall_invade.entity.blood_hunter.ScarletHunterPatch;
+import net.shelmarow.nightfall_invade.entity.scarlet_hunter.ScarletHunter;
+import net.shelmarow.nightfall_invade.entity.scarlet_hunter.ScarletHunterPatch;
 import org.jetbrains.annotations.Nullable;
 import yesman.epicfight.api.client.model.Mesh;
 import yesman.epicfight.api.client.model.Meshes;

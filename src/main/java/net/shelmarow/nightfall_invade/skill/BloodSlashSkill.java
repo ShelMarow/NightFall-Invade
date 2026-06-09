@@ -36,6 +36,7 @@ public class BloodSlashSkill extends Skill {
         container.getExecutor().playAnimationSynchronized(NFIAnimations.BLOOD_SLASH_ATTACK, 0F);
         container.getExecutor().getOriginal().addEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 30, 0, false, false, true));
     }
+
     @OnlyIn(Dist.CLIENT)
     public boolean shouldDraw(SkillContainer container) {
         return true;

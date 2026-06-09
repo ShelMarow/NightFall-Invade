@@ -1,10 +1,10 @@
-package net.shelmarow.nightfall_invade.entity.blood_hunter.client;
+package net.shelmarow.nightfall_invade.entity.scarlet_hunter.client;
 
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.entity.EntityType;
-import net.shelmarow.nightfall_invade.entity.blood_hunter.ScarletHunter;
-import net.shelmarow.nightfall_invade.entity.blood_hunter.ScarletHunterPatch;
+import net.shelmarow.nightfall_invade.entity.scarlet_hunter.ScarletHunter;
+import net.shelmarow.nightfall_invade.entity.scarlet_hunter.ScarletHunterPatch;
 import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.client.mesh.HumanoidMesh;
 import yesman.epicfight.client.renderer.patched.entity.PHumanoidRenderer;

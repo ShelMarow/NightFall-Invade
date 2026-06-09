@@ -6,7 +6,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.shelmarow.nightfall_invade.NightFallInvade;
-import net.shelmarow.nightfall_invade.entity.blood_hunter.ScarletHunter;
+import net.shelmarow.nightfall_invade.entity.scarlet_hunter.ScarletHunter;
 import net.shelmarow.nightfall_invade.entity.fallen_knight.FallenKnight;
 import net.shelmarow.nightfall_invade.entity.misc.blood_bomb.BloodBoom;
 import net.shelmarow.nightfall_invade.entity.misc.blood_slash.BloodSlashEntity;

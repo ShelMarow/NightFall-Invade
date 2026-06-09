@@ -102,17 +102,14 @@ public class BloodSlashEntity extends Mob {
 
     @Override
     public boolean doHurtTarget(@NotNull Entity pEntity) {
-        float damage = (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE);
-        if(pEntity instanceof LivingEntity livingEntity) {
-            damage += livingEntity.getMaxHealth() * maxHpDamage + livingEntity.getHealth() * hpDamage;
-        }
+        float damage = getTotalDamage(pEntity);
         boolean flag = pEntity.hurt(this.damageSources().mobAttack(this), damage);
         if (flag) {
             this.doEnchantDamageEffects(this, pEntity);
             this.setLastHurtMob(pEntity);
 
             EpicFightCapabilities.getUnparameterizedEntityPatch(this, BloodSlashPatch.class).ifPresent(entitypatch -> {
-                entitypatch.setLastAttackResult(AttackResult.success(0));
+                entitypatch.setLastAttackResult(AttackResult.success(damage));
                 entitypatch.setLastAttackEntity(pEntity);
             });
 
@@ -129,7 +126,16 @@ public class BloodSlashEntity extends Mob {
             }
         }
 
+
         return flag;
+    }
+
+    public float getTotalDamage(@NotNull Entity pEntity) {
+        float damage = (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+        if(pEntity instanceof LivingEntity livingEntity) {
+            damage += livingEntity.getMaxHealth() * maxHpDamage + livingEntity.getHealth() * hpDamage;
+        }
+        return damage;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package net.shelmarow.nightfall_invade.entity.blood_hunter.client;
+package net.shelmarow.nightfall_invade.entity.scarlet_hunter.client;
 
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.shelmarow.nightfall_invade.NightFallInvade;
-import net.shelmarow.nightfall_invade.entity.blood_hunter.ScarletHunter;
+import net.shelmarow.nightfall_invade.entity.scarlet_hunter.ScarletHunter;
 import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)

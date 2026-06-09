@@ -6,7 +6,11 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.shelmarow.nightfall_invade.assets.NFIAnimations;
@@ -23,8 +27,13 @@ import yesman.epicfight.world.capabilities.EpicFightCapabilities;
 import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.MobPatch;
 import yesman.epicfight.world.capabilities.entitypatch.player.PlayerPatch;
+import yesman.epicfight.world.capabilities.item.CapabilityItem;
 import yesman.epicfight.world.damagesource.EpicFightDamageSource;
+import yesman.epicfight.world.damagesource.EpicFightDamageTypeTags;
 import yesman.epicfight.world.damagesource.StunType;
+
+import java.util.Collection;
+import java.util.Set;
 
 public class BloodSlashPatch extends MobPatch<BloodSlashEntity> {
 
@@ -53,17 +62,29 @@ public class BloodSlashPatch extends MobPatch<BloodSlashEntity> {
 
     @Override
     public AttackResult attack(EpicFightDamageSource damageSource, Entity target, InteractionHand hand) {
+        if(original.getOwner() instanceof Player) {
+            damageSource.addRuntimeTag(EpicFightDamageTypeTags.GUARD_PUNCTURE);
+            damageSource.addRuntimeTag(EpicFightDamageTypeTags.UNBLOCKALBE);
+        }
         if(target instanceof Player player && !player.isCreative() && !player.isSpectator()) {
-            damageSource.addRuntimeTag(DamageTypeTags.BYPASSES_INVULNERABILITY);
             PlayerPatch<?> playerPatch = EpicFightCapabilities.getPlayerPatch(player);
             if(playerPatch != null) {
                 AttackResult.ResultType result = playerPatch.getEntityState().attackResult(damageSource);
-                if(result != AttackResult.ResultType.SUCCESS){
+                if(result == AttackResult.ResultType.MISSED){
                     playerPatch.playAnimationSynchronized(playerPatch.getHitAnimation(damageSource.getStunType()),0F);
                 }
             }
         }
-        return super.attack(damageSource, target, hand);
+
+        AttackResult attack = super.attack(damageSource, target, hand);
+        if(target instanceof Player player && !player.isCreative() && !player.isSpectator() && attack.resultType != AttackResult.ResultType.SUCCESS){
+            EpicFightDamageSource source = getDamageSource(damageSource.getAnimation(), InteractionHand.MAIN_HAND);
+            source.setStunType(StunType.NONE);
+            source.addRuntimeTag(DamageTypeTags.BYPASSES_INVULNERABILITY);
+            source.addRuntimeTag(DamageTypeTags.BYPASSES_COOLDOWN);
+            player.hurt(source, original.getTotalDamage(target) * 0.25F);
+        }
+        return attack;
     }
 
     @Override

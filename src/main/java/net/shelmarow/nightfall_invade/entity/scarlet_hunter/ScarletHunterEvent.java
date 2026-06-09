@@ -1,4 +1,4 @@
-package net.shelmarow.nightfall_invade.entity.blood_hunter;
+package net.shelmarow.nightfall_invade.entity.scarlet_hunter;
 
 import com.hm.efn.registries.EFNMobEffectRegistry;
 import net.minecraft.world.damagesource.DamageSource;

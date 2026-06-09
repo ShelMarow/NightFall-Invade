@@ -73,8 +73,7 @@ public class NFIAnimations {
                         .addProperty(AnimationProperty.AttackPhaseProperty.IMPACT_MODIFIER, ValueModifier.multiplier(1F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.ARMOR_NEGATION_MODIFIER, ValueModifier.setter(100.0F))
                         .addProperty(AnimationProperty.AttackPhaseProperty.SOURCE_TAG, Set.of(
-                                EpicFightDamageTypeTags.FINISHER, EpicFightDamageTypeTags.BYPASS_DODGE,
-                                EpicFightDamageTypeTags.GUARD_PUNCTURE, EpicFightDamageTypeTags.UNBLOCKALBE)
+                                EpicFightDamageTypeTags.FINISHER, EpicFightDamageTypeTags.BYPASS_DODGE)
                         )
                         .addProperty(AnimationProperty.AttackPhaseProperty.HIT_SOUND, EpicFightSounds.BLADE_RUSH_FINISHER.get())
                         .addProperty(AnimationProperty.ActionAnimationProperty.STOP_MOVEMENT, true)
