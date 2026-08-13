@@ -37,6 +37,7 @@ import yesman.epicfight.world.damagesource.StunType;
 public class BloodBoom extends Projectile {
 
     private LivingEntityPatch<?> ownerPatch;
+    private boolean lunched = false;
     private int lifeTick = 0;
     private int waitTick = 30;
     private float damage = 1;
@@ -95,32 +96,36 @@ public class BloodBoom extends Projectile {
 
             //设置运动逻辑
             Vec3 velocity = this.getDeltaMovement();
+            //生成后等待一段时，期间逐渐减速
             if (lifeTick < waitTick) {
                 velocity = velocity.scale(0.9);
             }
+            //随后如果存在目标，进行追踪发射
             else if (ownerPatch != null && ownerPatch.getTarget() != null) {
 
                 LivingEntity target = ownerPatch.getTarget();
                 double speed = velocity.length();
 
-                if (lifeTick == waitTick || speed < 0.01) {
+                //启动时先索敌运动一次
+                if (!lunched && (lifeTick == waitTick || speed < 0.01)) {
+                    lunched = true;
                     Vec3 dir = target.getEyePosition().add(0,target.getY(0.5),0).subtract(this.getEyePosition()).normalize();
                     velocity = dir.scale(0.15);
                     speed = velocity.length();
                     level().playSound(null, blockPosition(), SoundEvents.WITHER_SHOOT, SoundSource.HOSTILE, 2.0F, 1.0F);
                 }
 
+                //计算运动方向和目标的夹角
                 Vec3 currentDir = velocity.normalize();
                 Vec3 targetDir = target.getEyePosition().subtract(this.getEyePosition()).normalize();
-
                 Vec3 currentXZ = new Vec3(currentDir.x, 0, currentDir.z).normalize();
                 Vec3 targetXZ = new Vec3(targetDir.x, 0, targetDir.z).normalize();
-
                 double dot = currentXZ.dot(targetXZ);
                 dot = Mth.clamp(dot, -1.0, 1.0);
                 double angle = Math.acos(dot);
 
-                if (angle <= Math.PI / 3) {
+                //如果角度过大则不进行追踪
+                if (angle <= Math.PI / 3 || lifeTick <= waitTick + 5) {
                     double maxTurn = Math.toRadians(2.0);
                     double t = Math.min(1.0, maxTurn / angle);
 
@@ -129,11 +134,14 @@ public class BloodBoom extends Projectile {
                     double newY = Mth.lerp(verticalLerp, currentDir.y, targetDir.y);
                     Vec3 newDir = new Vec3(newXZ.x, newY, newXZ.z).normalize();
 
+                    //速度设置
                     double accel = 1.1;
                     double maxSpeed = 1.15;
                     double newSpeed = Math.min(speed * accel, maxSpeed);
-
                     velocity = newDir.scale(newSpeed);
+                }
+                else {
+                    velocity = velocity.scale(1.15F);
                 }
 
             }
@@ -162,136 +170,6 @@ public class BloodBoom extends Projectile {
         }
     }
 
-//    public void tick() {
-//        Entity entity = this.getOwner();
-//        if (this.level().isClientSide || (entity == null || !entity.isRemoved()) && this.level().hasChunkAt(this.blockPosition())) {
-//            super.tick();
-//
-//            HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-//            if (hitresult.getType() != HitResult.Type.MISS && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult)) {
-//                this.onHit(hitresult);
-//            }
-//
-//            this.checkInsideBlocks();
-//            Vec3 vec3 = this.getDeltaMovement();
-//            double d0 = this.getX() + vec3.x;
-//            double d1 = this.getY() + vec3.y;
-//            double d2 = this.getZ() + vec3.z;
-//            ProjectileUtil.rotateTowardsMovement(this, 0.2F);
-//
-//            if(ownerPatch != null && ownerPatch.getTarget() != null) {
-//                Vec3 dirToTarget = getOwnerPatch().getTarget().getEyePosition().subtract(this.getEyePosition()).normalize().scale(0.05F);
-//                this.setDeltaMovement(vec3.add(dirToTarget));
-//            }
-//            this.level().addParticle(ParticleTypes.FLAME, d0, d1 + 0.5D, d2, 0.0D, 0.0D, 0.0D);
-//            this.setPos(d0, d1, d2);
-//        }
-//        else {
-//            this.discard();
-//        }
-//    }
-
-
-//    @Override
-//    public void tick() {
-//        super.tick();
-//
-//        int maxLiftTick = 400;
-//        if (lifeTick++ > maxLiftTick) {
-//            this.discard();
-//        }
-//
-//
-//
-//
-//        if (lifeTick < waitTick) {
-//            this.setDeltaMovement(this.getDeltaMovement().scale(0.9));
-//        }
-//        else if (ownerPatch != null && ownerPatch.getTarget() != null) {
-//
-//            LivingEntity target = ownerPatch.getTarget();
-//            Vec3 velocity = this.getDeltaMovement();
-//            double speed = velocity.length();
-//
-//            if (lifeTick == waitTick) {
-//                // 初始启动
-//                Vec3 dirToTarget = target.getEyePosition().subtract(this.getEyePosition()).normalize();
-//                this.setDeltaMovement(dirToTarget.scale(0.2));
-//                velocity = this.getDeltaMovement();
-//                speed = velocity.length();
-//            }
-//
-//            Vec3 currentDir = velocity.normalize();
-//            Vec3 dirToTarget = target.getEyePosition().subtract(this.getEyePosition()).normalize();
-//
-//            Vec3 currentDirXZ = new Vec3(currentDir.x, 0, currentDir.z).normalize();
-//            Vec3 dirToTargetXZ = new Vec3(dirToTarget.x, 0, dirToTarget.z).normalize();
-//
-//            double dot = currentDirXZ.dot(dirToTargetXZ);
-//            double angleRad = Math.acos(Math.min(Math.max(dot, -1.0), 1.0));
-//
-//            // 如果水平夹角 > 90°，不追踪
-//            if (angleRad > Math.PI * 70 / 180) return;
-//
-//            // 每tick最大旋转角度
-//            double maxTurnDeg = 5;
-//            double maxTurnRad = Math.toRadians(maxTurnDeg);
-//            double t = Math.min(1.0, maxTurnRad / angleRad);
-//
-//            // 水平平面平滑旋转
-//            Vec3 newDirXZ = currentDirXZ.lerp(dirToTargetXZ, t).normalize();
-//
-//            // 保留原有垂直分量（Y）
-//            Vec3 newDir = new Vec3(newDirXZ.x, currentDir.y, newDirXZ.z).normalize();
-//
-//            this.setDeltaMovement(newDir.scale(speed * 1.07));
-//
-//            if (!this.isNoGravity()) {
-//                double gravity = 0.005;
-//                velocity = getDeltaMovement().add(0, -gravity, 0);
-//                this.setDeltaMovement(velocity);
-//            }
-//        }
-//
-//
-//        Vec3 movement = this.getDeltaMovement();
-//        Vec3 start = this.position();
-//        Vec3 end = start.add(movement);
-//
-//        // 方块碰撞检测
-//        HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this,this::canHitEntity);
-//
-//        if (hitResult.getType() != HitResult.Type.MISS) {
-//            end = hitResult.getLocation();
-//        }
-//
-//        // 实体碰撞检测
-//        EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(
-//                this.level(), this,
-//                start, end,
-//                this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D),
-//                this::canHitEntity
-//        );
-//        if (entityHit != null) {
-//            hitResult = entityHit;
-//        }
-//        // 触发命中
-//        if (hitResult.getType() != HitResult.Type.MISS) {
-//            this.onHit(hitResult);
-//        }
-//
-//
-//        // 移动
-//        this.move(MoverType.SELF, getDeltaMovement());
-//
-//        //粒子效果
-//        if (level().isClientSide) {
-//            level().addAlwaysVisibleParticle(
-//                    ParticleTypes.FLAME, false, getX(), getY(), getZ(), 0,0, 0
-//            );
-//        }
-//
-//    }
 
     @Override
     protected boolean canHitEntity(@NotNull Entity pTarget) {

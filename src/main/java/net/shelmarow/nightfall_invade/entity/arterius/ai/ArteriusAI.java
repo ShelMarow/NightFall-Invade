@@ -126,7 +126,7 @@ public class ArteriusAI {
                                         .randomChance(0.65F)
                                         .addCooldown(140)
                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGE2,  new AnimationParams().transitionTime(0.45F).damageMultiplier(0.65F))
-                                        .addExBehavior(mobPatch -> {
+                                        .onBehaviorStart(mobPatch -> {
                                             mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 70), mobPatch.getOriginal());
                                             mobPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.GLOWING, 40));
                                             mobPatch.playSound(SoundEvents.ANVIL_LAND, 0, 0);
@@ -154,7 +154,7 @@ public class ArteriusAI {
                                         .randomChance(0.65F)
                                         .addCooldown(140)
                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGE2, new AnimationParams().transitionTime(0.45F).damageMultiplier(0.65F))
-                                        .addExBehavior(mobPatch -> {
+                                        .onBehaviorStart(mobPatch -> {
                                             mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 70), mobPatch.getOriginal());
                                             mobPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.GLOWING, 40));
                                             mobPatch.playSound(SoundEvents.ANVIL_LAND, 0, 0);
@@ -180,7 +180,7 @@ public class ArteriusAI {
                                         .randomChance(0.65F)
                                         .addCooldown(140)
                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGE2, new AnimationParams().transitionTime(0.45F).damageMultiplier(0.65F))
-                                        .addExBehavior(mobPatch -> {
+                                        .onBehaviorStart(mobPatch -> {
                                             mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 70), mobPatch.getOriginal());
                                             mobPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.GLOWING, 40));
                                             mobPatch.playSound(SoundEvents.ANVIL_LAND, 0, 0);
@@ -308,7 +308,7 @@ public class ArteriusAI {
                                                 .health(0.50F, HealthCheck.Comparator.LESS_RATIO)
                                                 .withinDistance(5, 12)
                                                 .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGE2, new AnimationParams().transitionTime(0.45F).damageMultiplier(0.65F))
-                                                .addExBehavior(mobPatch -> {
+                                                .onBehaviorStart(mobPatch -> {
                                                     mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 70), mobPatch.getOriginal());
                                                     mobPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.GLOWING, 40));
                                                     mobPatch.playSound(SoundEvents.ANVIL_LAND, 0, 0);
@@ -342,7 +342,7 @@ public class ArteriusAI {
                                                         .priority(1).weight(1.0).randomChance(0.65F)
                                                         .health(0.5F, HealthCheck.Comparator.LESS_RATIO)
                                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGE1, 0.45F)
-                                                        .addExBehavior(mobPatch -> {
+                                                        .onBehaviorStart(mobPatch -> {
                                                             mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 70), mobPatch.getOriginal());
                                                             mobPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.GLOWING, 40));
                                                             mobPatch.playSound(SoundEvents.ANVIL_LAND, 0, 0);
@@ -389,7 +389,7 @@ public class ArteriusAI {
                                         .priority(1).weight(0.5).health(0.75F, HealthCheck.Comparator.LESS_RATIO)
                                         .withinDistance(0, 4).withinAngle(0, 60)
                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGE1, 0.35F)
-                                        .addExBehavior(mobPatch -> {
+                                        .onBehaviorStart(mobPatch -> {
 
                                             mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 70), mobPatch.getOriginal());
                                             mobPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.GLOWING, 40));
@@ -442,7 +442,7 @@ public class ArteriusAI {
                                                         .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                                 .priority(1).weight(1).health(0.65F, HealthCheck.Comparator.LESS_RATIO)
                                                                 .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGE1, 0.25F)
-                                                                .addExBehavior(mobPatch -> {
+                                                                .onBehaviorStart(mobPatch -> {
                                                                     mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 60), mobPatch.getOriginal());
                                                                     mobPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.GLOWING, 40));
                                                                     mobPatch.playSound(SoundEvents.ANVIL_LAND, 0, 0);
@@ -492,7 +492,7 @@ public class ArteriusAI {
                                                         .priority(1).weight(1).health(0.75F, HealthCheck.Comparator.LESS_RATIO)
                                                         .withinDistance(0, 5).withinAngle(0, 120)
                                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGE1, 0.35F)
-                                                        .addExBehavior(mobPatch -> {
+                                                        .onBehaviorStart(mobPatch -> {
                                                             mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 60), mobPatch.getOriginal());
                                                             mobPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.GLOWING, 40));
                                                             mobPatch.playSound(SoundEvents.ANVIL_LAND, 0, 0);
@@ -654,39 +654,39 @@ public class ArteriusAI {
                                 .health(0.4F, HealthCheck.Comparator.GREATER_RATIO)
                                 .withinDistance(4.5, 8).withinAngle(0, 60).randomChance(0.35F)
                                 .animationBehavior(EFNLanceAnimations.NF_MEEN_DASH, new AnimationParams().transitionTime(0.5F).damageMultiplier(0.65F).impactMultiplier(0.5F).stunType(StunType.LONG))
-                                .addExBehavior(mobPatch -> {
+                                .onBehaviorStart(mobPatch -> {
                                     mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 40), mobPatch.getOriginal());
                                     mobPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.GLOWING, 40));
                                     mobPatch.playSound(SoundEvents.ANVIL_LAND, 0, 0);
                                 })
                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_DASH, new AnimationParams().transitionTime(-0.45F).damageMultiplier(0.65F).impactMultiplier(0.5F).stunType(StunType.LONG))
-                                        .addExBehavior(mobPatch -> {
+                                        .onBehaviorStart(mobPatch -> {
                                             mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 40), mobPatch.getOriginal());
                                         })
                                         .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                 .animationBehavior(EFNLanceAnimations.NF_MEEN_DASH, new AnimationParams().transitionTime(-0.45F).damageMultiplier(0.65F).impactMultiplier(0.5F).stunType(StunType.LONG))
-                                                .addExBehavior(mobPatch -> {
+                                                .onBehaviorStart(mobPatch -> {
                                                     mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 40), mobPatch.getOriginal());
                                                 })
                                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_DASH, new AnimationParams().transitionTime(-0.45F).damageMultiplier(0.65F).impactMultiplier(0.5F).stunType(StunType.LONG))
-                                                        .addExBehavior(mobPatch -> {
+                                                        .onBehaviorStart(mobPatch -> {
                                                             mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 40), mobPatch.getOriginal());
                                                         })
                                                         .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                                 .animationBehavior(EFNLanceAnimations.NF_MEEN_DASH, new AnimationParams().transitionTime(-0.45F).damageMultiplier(0.65F).impactMultiplier(0.5F).stunType(StunType.LONG))
-                                                                .addExBehavior(mobPatch -> {
+                                                                .onBehaviorStart(mobPatch -> {
                                                                     mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 40), mobPatch.getOriginal());
                                                                 })
                                                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_DASH, new AnimationParams().transitionTime(-0.45F).damageMultiplier(0.65F).impactMultiplier(0.5F).stunType(StunType.LONG))
-                                                                        .addExBehavior(mobPatch -> {
+                                                                        .onBehaviorStart(mobPatch -> {
                                                                             mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 40), mobPatch.getOriginal());
                                                                         })
                                                                         .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                                                 .animationBehavior(EFNLanceAnimations.NF_MEEN_DASH, new AnimationParams().transitionTime(-0.45F).damageMultiplier(1.3F).impactMultiplier(2.5F).stunType(StunType.LONG))
-                                                                                .addExBehavior(mobPatch -> {
+                                                                                .onBehaviorStart(mobPatch -> {
                                                                                     mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 40), mobPatch.getOriginal());
                                                                                 })
                                                                         ))))))))
@@ -711,7 +711,7 @@ public class ArteriusAI {
                                                 .priority(1).weight(1)
                                                 .health(0.5F, HealthCheck.Comparator.LESS_RATIO)
                                                 .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGE2, new AnimationParams().transitionTime(0.45F).damageMultiplier(0.65F))
-                                                .addExBehavior(mobPatch -> {
+                                                .onBehaviorStart(mobPatch -> {
                                                     mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 70), mobPatch.getOriginal());
                                                     mobPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.GLOWING, 40));
                                                     mobPatch.playSound(SoundEvents.ANVIL_LAND, 0, 0);
@@ -754,7 +754,7 @@ public class ArteriusAI {
                                                         .priority(1).weight(1.5)
                                                         .health(0.5F, HealthCheck.Comparator.LESS_RATIO)
                                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGE2, new AnimationParams().transitionTime(0.45F).damageMultiplier(0.65F))
-                                                        .addExBehavior(mobPatch -> {
+                                                        .onBehaviorStart(mobPatch -> {
                                                             mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 70), mobPatch.getOriginal());
                                                             mobPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.GLOWING, 40));
                                                             mobPatch.playSound(SoundEvents.ANVIL_LAND, 0, 0);
@@ -796,7 +796,7 @@ public class ArteriusAI {
                                 .health(0.65F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
                                 .withinDistance(6, 12).withinAngle(0, 60)
                                 .animationBehavior(EFNGreatSwordAnimations.NG_GREATSWORD_CHARG1MAX_FIRST, new AnimationParams().transitionTime(0.4F).damageMultiplier(0.6F))
-                                .addExBehavior(mobPatch -> {
+                                .onBehaviorStart(mobPatch -> {
                                     mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 70), mobPatch.getOriginal());
                                 })
 
@@ -838,7 +838,7 @@ public class ArteriusAI {
                                 })
                                 .interruptedByTime(1.85F,1.95F)
                                 .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGING_MOB, 0.15F)
-                                .addExBehavior(mobPatch -> {
+                                .onBehaviorStart(mobPatch -> {
                                     Arterius arterius = (Arterius) mobPatch.getOriginal();
                                     arterius.setSkillReleased(1);
                                     arterius.setInvulnerableTimer(60);
@@ -862,7 +862,7 @@ public class ArteriusAI {
                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                         .canInterruptParent(true)
                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGE1, 0.1F)
-                                        .addExBehavior(mobPatch -> {
+                                        .onBehaviorStart(mobPatch -> {
                                             mobPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.GLOWING, 40));
                                             mobPatch.playSound(SoundEvents.ANVIL_LAND, 0, 0);
                                             if(mobPatch.getTarget() != null) {
@@ -899,7 +899,7 @@ public class ArteriusAI {
                                 })
                                 .interruptedByTime(3.0F,3.1F)
                                 .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGING_MOB, 0.15F)
-                                .addExBehavior(mobPatch -> {
+                                .onBehaviorStart(mobPatch -> {
                                     Arterius arterius = (Arterius) mobPatch.getOriginal();
                                     arterius.setSkillReleased(2);
                                     arterius.setInvulnerableTimer(80);
@@ -923,7 +923,7 @@ public class ArteriusAI {
                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                         .canInterruptParent(true)
                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGE2, new AnimationParams().transitionTime(0.45F).damageMultiplier(0.65F))
-                                        .addExBehavior(mobPatch -> {
+                                        .onBehaviorStart(mobPatch -> {
                                             mobPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.GLOWING, 40));
                                             mobPatch.playSound(SoundEvents.ANVIL_LAND, 0, 0);
                                             int random = mobPatch.getOriginal().getRandom().nextInt(5);
@@ -946,7 +946,7 @@ public class ArteriusAI {
                                     return arterius.getSkillReleased() == 2 && arterius.getBossPhase() == 3;
                                 })
                                 .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGING_MOB, 0.15F)
-                                .addExBehavior(mobPatch -> {
+                                .onBehaviorStart(mobPatch -> {
                                     Arterius arterius = (Arterius) mobPatch.getOriginal();
                                     arterius.setSkillReleased(3);
                                     arterius.setInvulnerableTimer(100);
@@ -1015,7 +1015,7 @@ public class ArteriusAI {
                                                 EpicFightDamageTypeTags.GUARD_PUNCTURE,
                                                 EpicFightDamageTypeTags.UNBLOCKALBE
                                         )))
-                                .addExBehavior(mobPatch -> {
+                                .onBehaviorStart(mobPatch -> {
                                     mobPatch.getOriginal().addEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 100));
                                     mobPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.GLOWING, 40));
                                     mobPatch.playSound(SoundEvents.ANVIL_LAND, 0, 0);
@@ -1110,7 +1110,7 @@ public class ArteriusAI {
                                 .withinDistance(4.5,100)
                                 .custom(mobPatch -> ((Arterius) mobPatch.getOriginal()).getFarAwayFromTargetTime() > 600)
                                 .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGING_MOB, new AnimationParams().transitionTime(0.05F).damageMultiplier(2F).impactMultiplier(2F))
-                                .addExBehavior(mobPatch -> {
+                                .onBehaviorStart(mobPatch -> {
                                     //重置时间
                                     ((Arterius) mobPatch.getOriginal()).setFarAwayFromTargetTime(0);
                                     ((Arterius) mobPatch.getOriginal()).setInvulnerableTimer(100);
@@ -1257,12 +1257,12 @@ public class ArteriusAI {
 
                                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_AUTO3,0.35F)
-                                                        .addExBehavior(applyStunImmunity(80))
+                                                        .onBehaviorStart(applyStunImmunity(80))
                                                 )
 
                                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_AUTO4,0.35F)
-                                                        .addExBehavior(applyStunImmunity(80))
+                                                        .onBehaviorStart(applyStunImmunity(80))
                                                 )
                                         )
                                 )
@@ -1276,7 +1276,7 @@ public class ArteriusAI {
                                                 .withinDistance(0,4)
                                                 .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGE1, new AnimationParams()
                                                         .transitionTime(0.45F).playSpeed(0.8F))
-                                                .addExBehavior(applyStunImmunity(100),bypassGuardWarning())
+                                                .onBehaviorStart(applyStunImmunity(100),bypassGuardWarning())
                                                 .addTimeEvent(
                                                         new TimeEvent(1F, mobPatch -> {
                                                             if(mobPatch.getOriginal() instanceof Arterius arterius) {
@@ -1299,7 +1299,7 @@ public class ArteriusAI {
                                                 .interruptedByTime(0.5F,0.6F)
                                                 .withinDistance(4,100)
                                                 .animationBehavior(EFNGreatSwordAnimations.NG_GREATSWORD_CHARG1MAX_SECOND, 0.15F)
-                                                .addExBehavior(applyStunImmunity(80))
+                                                .onBehaviorStart(applyStunImmunity(80))
                                         )
                                 )
                         )
@@ -1315,7 +1315,7 @@ public class ArteriusAI {
                                         .withinDistance(0,4)
                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGE1, new AnimationParams()
                                                 .transitionTime(0.45F).playSpeed(0.8F))
-                                        .addExBehavior(applyStunImmunity(100),bypassGuardWarning())
+                                        .onBehaviorStart(applyStunImmunity(100),bypassGuardWarning())
                                         .addTimeEvent(
                                                 new TimeEvent(1F, mobPatch -> {
                                                     if(mobPatch.getOriginal() instanceof Arterius arterius) {
@@ -1338,7 +1338,7 @@ public class ArteriusAI {
                                         .interruptedByTime(0.5F,0.6F)
                                         .withinDistance(4,100)
                                         .animationBehavior(EFNGreatSwordAnimations.NG_GREATSWORD_CHARG1MAX_SECOND, 0.15F)
-                                        .addExBehavior(applyStunImmunity(80))
+                                        .onBehaviorStart(applyStunImmunity(80))
                                 )
                         )
                 )
@@ -1353,7 +1353,7 @@ public class ArteriusAI {
                                 .withinDistance(6,16)
                                 .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGE2,new AnimationParams()
                                         .transitionTime(0.45F).playSpeed(0.8F))
-                                .addExBehavior(applyStunImmunity(100),bypassDodgeWarning())
+                                .onBehaviorStart(applyStunImmunity(100),bypassDodgeWarning())
                         )
 
                         //小人车
@@ -1361,18 +1361,18 @@ public class ArteriusAI {
                                 .withinDistance(0,6)
                                 .animationBehavior(EFNLanceAnimations.NF_MEEN_DASH, new AnimationParams()
                                         .transitionTime(0.35F).damageMultiplier(0.65F).impactMultiplier(0.5F).stunType(StunType.SHORT))
-                                .addExBehavior(applyStunImmunity(20))
+                                .onBehaviorStart(applyStunImmunity(20))
 
                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                         .name("ArteriusDashing")
                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_DASH, new AnimationParams()
                                                 .transitionTime(-0.45F).damageMultiplier(0.65F).impactMultiplier(0.5F).stunType(StunType.SHORT))
-                                        .addExBehavior(applyStunImmunity(20))
+                                        .onBehaviorStart(applyStunImmunity(20))
 
                                         .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                 .animationBehavior(EFNLanceAnimations.NF_MEEN_AUTO3, new AnimationParams()
                                                         .transitionTime(0.1F).playSpeed(1.0F))
-                                                .addExBehavior(applyStunImmunity(80))
+                                                .onBehaviorStart(applyStunImmunity(80))
                                                 .addTimeEvent(
                                                         new TimeEvent(0.25F,mobPatch -> {
                                                             CEPatchUtils.setPlaySpeed(mobPatch,0.275F);
@@ -1430,13 +1430,13 @@ public class ArteriusAI {
                                 .withinDistance(6,16)
                                 .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGE2,new AnimationParams()
                                         .transitionTime(0.45F).playSpeed(0.8F))
-                                .addExBehavior(applyStunImmunity(100),bypassDodgeWarning())
+                                .onBehaviorStart(applyStunImmunity(100),bypassDodgeWarning())
 
                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                         .canInterruptParent(true)
                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGE1,new AnimationParams()
                                                 .transitionTime(0.45F).playSpeed(0.8F))
-                                        .addExBehavior(applyStunImmunity(100),bypassGuardWarning())
+                                        .onBehaviorStart(applyStunImmunity(100),bypassGuardWarning())
                                         .addTimeEvent(
                                                 new TimeEvent(1F, mobPatch -> {
                                                     if(mobPatch.getOriginal() instanceof Arterius arterius) {
@@ -1467,14 +1467,14 @@ public class ArteriusAI {
                                 .withinDistance(0,5)
                                 .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGE2,new AnimationParams()
                                         .transitionTime(0.25F).playSpeed(1F))
-                                .addExBehavior(mobPatch -> mobPatch.playSound(SoundEvents.TRIDENT_RIPTIDE_3,1,0,0))
-                                .addExBehavior(applyStunImmunity(120))
+                                .onBehaviorStart(mobPatch -> mobPatch.playSound(SoundEvents.TRIDENT_RIPTIDE_3,1,0,0))
+                                .onBehaviorStart(applyStunImmunity(120))
 
                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                         .canInterruptParent(true)
                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGE1,new AnimationParams()
                                                 .transitionTime(0.5F).playSpeed(0.75F))
-                                        .addExBehavior(bypassGuardWarning())
+                                        .onBehaviorStart(bypassGuardWarning())
                                         .addTimeEvent(
                                                 new TimeEvent(0.6F,mobPatch -> {
                                                     CEPatchUtils.setPlaySpeed(mobPatch,0.125F);
@@ -1514,7 +1514,7 @@ public class ArteriusAI {
                                                         .weight(2)
                                                         .withinDistance(0,6)
                                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_AUTO4,0F)
-                                                        .addExBehavior(applyStunImmunity(80))
+                                                        .onBehaviorStart(applyStunImmunity(80))
                                                 )
                                         )
                                 )
@@ -1536,7 +1536,7 @@ public class ArteriusAI {
                                                         .canInsertGlobalBehavior(true,"common_comboA1")
                                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_AUTO3, new AnimationParams()
                                                                 .transitionTime(0.25F).stunType(StunType.LONG))
-                                                        .addExBehavior(applyStunImmunity(80))
+                                                        .onBehaviorStart(applyStunImmunity(80))
                                                 )
 
                                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
@@ -1545,7 +1545,7 @@ public class ArteriusAI {
                                                         .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                                 .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGE2, new AnimationParams()
                                                                         .transitionTime(0.45F).damageMultiplier(0.65F))
-                                                                .addExBehavior(mobPatch -> {
+                                                                .onBehaviorStart(mobPatch -> {
                                                                     if(mobPatch.getOriginal() instanceof Arterius arterius) {
                                                                         mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 70), mobPatch.getOriginal());
                                                                         mobPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.GLOWING, 40));
@@ -1595,7 +1595,7 @@ public class ArteriusAI {
                                                         .withinDistance(0, 8)
                                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_AUTO3, new AnimationParams()
                                                                 .transitionTime(0.35F).playSpeed(0.85F).stunType(StunType.LONG))
-                                                        .addExBehavior(applyStunImmunity(80))
+                                                        .onBehaviorStart(applyStunImmunity(80))
                                                 )
                                         )
                                 )
@@ -1671,7 +1671,7 @@ public class ArteriusAI {
                                 .animationBehavior(EFNLanceAnimations.NF_MEEN_DASH, new AnimationParams()
                                         .transitionTime(0.5F).damageMultiplier(0.65F).impactMultiplier(0.5F).stunType(StunType.LONG)
                                         .damageSource(Set.of(EpicFightDamageTypeTags.BYPASS_DODGE, EpicFightDamageTypeTags.GUARD_PUNCTURE, EpicFightDamageTypeTags.UNBLOCKALBE)))
-                                .addExBehavior(mobPatch -> {
+                                .onBehaviorStart(mobPatch -> {
                                     mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 40), mobPatch.getOriginal());
                                     mobPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.GLOWING, 40));
                                     mobPatch.playSound(SoundEvents.ANVIL_LAND, 0, 0);
@@ -1693,7 +1693,7 @@ public class ArteriusAI {
                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_DASH, new AnimationParams()
                                                 .transitionTime(-0.45F).damageMultiplier(0.65F).impactMultiplier(0.5F).stunType(StunType.LONG)
                                                 .damageSource(Set.of(EpicFightDamageTypeTags.BYPASS_DODGE, EpicFightDamageTypeTags.GUARD_PUNCTURE, EpicFightDamageTypeTags.UNBLOCKALBE)))
-                                        .addExBehavior(mobPatch -> {
+                                        .onBehaviorStart(mobPatch -> {
                                             mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 40), mobPatch.getOriginal());
                                         })
 
@@ -1701,7 +1701,7 @@ public class ArteriusAI {
                                                 .animationBehavior(EFNLanceAnimations.NF_MEEN_DASH, new AnimationParams()
                                                         .transitionTime(-0.45F).damageMultiplier(0.65F).impactMultiplier(0.5F).stunType(StunType.LONG)
                                                         .damageSource(Set.of(EpicFightDamageTypeTags.BYPASS_DODGE, EpicFightDamageTypeTags.GUARD_PUNCTURE, EpicFightDamageTypeTags.UNBLOCKALBE)))
-                                                .addExBehavior(mobPatch -> {
+                                                .onBehaviorStart(mobPatch -> {
                                                     mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 40), mobPatch.getOriginal());
                                                 })
 
@@ -1709,7 +1709,7 @@ public class ArteriusAI {
                                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_DASH, new AnimationParams()
                                                                 .transitionTime(-0.45F).damageMultiplier(0.65F).impactMultiplier(0.5F).stunType(StunType.LONG)
                                                                 .damageSource(Set.of(EpicFightDamageTypeTags.BYPASS_DODGE, EpicFightDamageTypeTags.GUARD_PUNCTURE, EpicFightDamageTypeTags.UNBLOCKALBE)))
-                                                        .addExBehavior(mobPatch -> {
+                                                        .onBehaviorStart(mobPatch -> {
                                                             mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 40), mobPatch.getOriginal());
                                                         })
 
@@ -1717,7 +1717,7 @@ public class ArteriusAI {
                                                                 .animationBehavior(EFNLanceAnimations.NF_MEEN_DASH, new AnimationParams()
                                                                         .transitionTime(-0.45F).damageMultiplier(0.65F).impactMultiplier(0.5F).stunType(StunType.LONG)
                                                                         .damageSource(Set.of(EpicFightDamageTypeTags.BYPASS_DODGE, EpicFightDamageTypeTags.GUARD_PUNCTURE, EpicFightDamageTypeTags.UNBLOCKALBE)))
-                                                                .addExBehavior(mobPatch -> {
+                                                                .onBehaviorStart(mobPatch -> {
                                                                     mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 40), mobPatch.getOriginal());
                                                                 })
 
@@ -1725,7 +1725,7 @@ public class ArteriusAI {
                                                                         .animationBehavior(EFNLanceAnimations.NF_MEEN_DASH, new AnimationParams()
                                                                                 .transitionTime(-0.45F).damageMultiplier(0.65F).impactMultiplier(0.5F).stunType(StunType.LONG)
                                                                                 .damageSource(Set.of(EpicFightDamageTypeTags.BYPASS_DODGE, EpicFightDamageTypeTags.GUARD_PUNCTURE, EpicFightDamageTypeTags.UNBLOCKALBE)))
-                                                                        .addExBehavior(mobPatch -> {
+                                                                        .onBehaviorStart(mobPatch -> {
                                                                             mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 40), mobPatch.getOriginal());
                                                                         })
 
@@ -1739,7 +1739,7 @@ public class ArteriusAI {
                                                                                         .addPhase(2, new PhaseParams().damageMultiplier(2.0F).impactMultiplier(2.5F).stunType(StunType.LONG)
                                                                                                 .damageSource(Set.of(EpicFightDamageTypeTags.BYPASS_DODGE, EpicFightDamageTypeTags.GUARD_PUNCTURE, EpicFightDamageTypeTags.UNBLOCKALBE)))
                                                                                 )
-                                                                                .addExBehavior(mobPatch -> {
+                                                                                .onBehaviorStart(mobPatch -> {
                                                                                     mobPatch.getOriginal().forceAddEffect(new MobEffectInstance(CEMobEffects.FULL_STUN_IMMUNITY.get(), 40), mobPatch.getOriginal());
                                                                                 })
                                                                         )
@@ -1776,7 +1776,7 @@ public class ArteriusAI {
                                     return arterius.getSkillReleased() == 0 && arterius.getBossPhase() == 1;
                                 })
                                 .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGING_MOB, 0.15F)
-                                .addExBehavior(mobPatch -> {
+                                .onBehaviorStart(mobPatch -> {
                                     Arterius arterius = (Arterius) mobPatch.getOriginal();
                                     arterius.setSkillReleased(1);
                                     arterius.setInvulnerableTimer(120);

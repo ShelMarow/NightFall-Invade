@@ -68,6 +68,12 @@ public class ArteriusPatch extends CEHumanoidPatch<Arterius> implements CustomEx
 
     }
 
+
+    @Override
+    public boolean shouldDisplayHealthBar() {
+        return false;
+    }
+
     @Override
     public void initLivingMotions(Animator animator) {
         animator.addLivingAnimation(LivingMotions.BLOCK, Animations.SPEAR_GUARD);

@@ -18,10 +18,22 @@ public class BossConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> ARTERIUS_DAMAGE_MAX_THRESHOLD;
     public static final ForgeConfigSpec.ConfigValue<Double> ARTERIUS_MAX_REDUCTION;
     public static final ForgeConfigSpec.ConfigValue<Integer> ARTERIUS_DECAY_SECOND;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> SCARLET_HUNTER_DAMAGE_MULTIPLIER;
+    public static final ForgeConfigSpec.ConfigValue<Double> SCARLET_HUNTER_HEALTH_MULTIPLIER;
+    public static final ForgeConfigSpec.ConfigValue<Double> SCARLET_HUNTER_STAMINA_MULTIPLIER;
+    public static final ForgeConfigSpec.ConfigValue<Double> SCARLET_HUNTER_DAMAGE_CAP;
+    public static final ForgeConfigSpec.ConfigValue<Double> SCARLET_HUNTER_DAMAGE_MAX_THRESHOLD;
+    public static final ForgeConfigSpec.ConfigValue<Double> SCARLET_HUNTER_MAX_REDUCTION;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SCARLET_HUNTER_DECAY_SECOND;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SCARLET_HUNTER_BLOOD_SHIELD_DURATION;
+    public static final ForgeConfigSpec.ConfigValue<Integer> SCARLET_HUNTER_BLOOD_SHIELD_COOLDOWN;
+
     static {
         ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
 
         builder.push("BOSS Config");
+
         builder.push("Arterius Config");
 
         ARTERIUS_ATTACK_DAMAGE_MULTIPLIER = builder
@@ -79,6 +91,49 @@ public class BossConfig {
 
 
         builder.pop();
+
+        builder.push("Scarlet Hunter Config");
+
+        SCARLET_HUNTER_DAMAGE_MULTIPLIER = builder
+                .comment("攻击力倍率")
+                .defineInRange("scarletHunterDamageMultiplier",1D,0D,Double.MAX_VALUE);
+
+        SCARLET_HUNTER_HEALTH_MULTIPLIER = builder
+                .comment("最大生命值倍率")
+                .defineInRange("scarletHunterHealthMultiplier",1D,0D,Double.MAX_VALUE);
+
+        SCARLET_HUNTER_STAMINA_MULTIPLIER = builder
+                .comment("耐力倍率")
+                .defineInRange("scarletHunterStaminaMultiplier",1D,0D,Double.MAX_VALUE);
+
+        SCARLET_HUNTER_DAMAGE_CAP = builder
+                .comment("单次伤害上限（最大生命值百分比）")
+                .defineInRange("scarletHunterDamageCap",0.04D,0D,1D);
+
+        SCARLET_HUNTER_DAMAGE_MAX_THRESHOLD = builder
+                .comment("达到最大减伤所需的伤害比例")
+                .defineInRange("scarletHunterDamageMaxThreshold",0.06D,0D,1D);
+
+        SCARLET_HUNTER_MAX_REDUCTION = builder
+                .comment("最大减伤比例")
+                .defineInRange("scarletHunterMaxReduction",0.9D,0D,1D);
+
+        SCARLET_HUNTER_DECAY_SECOND = builder
+                .comment("减伤从最大衰减到0的时间（tick）")
+                .defineInRange("scarletHunterDecaySecond",160,0,Integer.MAX_VALUE);
+
+        SCARLET_HUNTER_BLOOD_SHIELD_DURATION = builder
+                .comment("血盾持续时间（tick）")
+                .defineInRange("scarletHunterBloodShieldDuration",2400,0,Integer.MAX_VALUE);
+
+        SCARLET_HUNTER_BLOOD_SHIELD_COOLDOWN = builder
+                .comment("血盾冷却时间（tick）")
+                .defineInRange("scarletHunterBloodShieldCooldown",2400,0,Integer.MAX_VALUE);
+
+        builder.pop();
+
+
+
         builder.pop();
 
         FORGE_CONFIG_SPEC = builder.build();

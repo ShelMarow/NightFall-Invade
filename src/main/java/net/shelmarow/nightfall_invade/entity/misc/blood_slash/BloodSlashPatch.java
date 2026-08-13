@@ -39,6 +39,7 @@ public class BloodSlashPatch extends MobPatch<BloodSlashEntity> {
 
     public BloodSlashPatch() {
         super(NFIFaction.NFII_NO_ALIVE);
+
     }
 
     @Override
@@ -82,7 +83,10 @@ public class BloodSlashPatch extends MobPatch<BloodSlashEntity> {
             source.setStunType(StunType.NONE);
             source.addRuntimeTag(DamageTypeTags.BYPASSES_INVULNERABILITY);
             source.addRuntimeTag(DamageTypeTags.BYPASSES_COOLDOWN);
-            player.hurt(source, original.getTotalDamage(target) * 0.25F);
+            if(!player.hurt(damageSource, original.getTotalDamage(target) * 0.35F)){
+                player.playSound(damageSource.type().effects().sound());
+                player.setHealth(player.getHealth() - original.getTotalDamage(target) * 0.35F);
+            }
         }
         return attack;
     }

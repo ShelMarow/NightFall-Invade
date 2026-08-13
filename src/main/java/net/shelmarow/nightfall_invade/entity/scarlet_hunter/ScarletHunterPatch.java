@@ -25,8 +25,11 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.shelmarow.combat_evolution.ai.CEHumanoidPatch;
 import net.shelmarow.combat_evolution.ai.StaminaStatus;
+import net.shelmarow.combat_evolution.ai.iml.CustomExecuteEntity;
 import net.shelmarow.combat_evolution.ai.util.CEPatchUtils;
+import net.shelmarow.combat_evolution.effect.CEMobEffects;
 import net.shelmarow.combat_evolution.effect.CEStunImmunityEffect;
+import net.shelmarow.combat_evolution.execution.ExecutionTypeManager;
 import net.shelmarow.nightfall_invade.assets.NFIAnimations;
 import net.shelmarow.nightfall_invade.entity.scarlet_hunter.ai.ScarletHunterAI;
 import yesman.epicfight.api.animation.AnimationManager;
@@ -47,18 +50,18 @@ import yesman.epicfight.world.damagesource.StunType;
 import java.util.List;
 import java.util.Set;
 
-public class ScarletHunterPatch extends CEHumanoidPatch<ScarletHunter> {
+public class ScarletHunterPatch extends CEHumanoidPatch<ScarletHunter> implements CustomExecuteEntity {
 
 
     public ScarletHunterPatch() {
         super(Factions.NEUTRAL);
         this.chasingSpeed = 1.35F;
-        this.breakTime = 80;
+        this.breakTime = 90;
     }
 
     @Override
-    public void onStartTracking(ServerPlayer trackingPlayer) {
-        super.onStartTracking(trackingPlayer);
+    public boolean shouldDisplayHealthBar() {
+        return false;
     }
 
     @Override
@@ -84,7 +87,7 @@ public class ScarletHunterPatch extends CEHumanoidPatch<ScarletHunter> {
                 scarletHunter.totalDamageTaken = 0;
                 scarletHunter.totalHitCounter = 0;
 
-                float damageAmount = scarletHunter.getMaxHealth() * 0.15F;
+                float damageAmount = scarletHunter.getMaxHealth() * 1.15F;
                 if(scarletHunter.getHealth() <= damageAmount){
                     damageAmount = scarletHunter.getHealth() - 1F;
                 }
@@ -227,6 +230,7 @@ public class ScarletHunterPatch extends CEHumanoidPatch<ScarletHunter> {
         if(stunType == StunType.SHORT || stunType == StunType.HOLD){
             stunType = StunType.LONG;
         }
+        getOriginal().addEffect(new MobEffectInstance(CEMobEffects.HIGH_STUN_IMMUNITY.get(), 30, 0, false, false));
         return super.applyStun(stunType, 0F);
     }
 
@@ -285,5 +289,20 @@ public class ScarletHunterPatch extends CEHumanoidPatch<ScarletHunter> {
                 return null;
             }
         }
+    }
+
+    @Override
+    public boolean canBeExecuted(LivingEntityPatch<?> livingEntityPatch) {
+        return CEPatchUtils.getStaminaStatus(this) == StaminaStatus.BREAK && CEPatchUtils.getStamina(this) == 0;
+    }
+
+    @Override
+    public boolean canUseCustomType(LivingEntityPatch<?> livingEntityPatch, ExecutionTypeManager.Type type) {
+        return false;
+    }
+
+    @Override
+    public ExecutionTypeManager.Type getExecutionType(LivingEntityPatch<?> livingEntityPatch, ExecutionTypeManager.Type type) {
+        return type;
     }
 }

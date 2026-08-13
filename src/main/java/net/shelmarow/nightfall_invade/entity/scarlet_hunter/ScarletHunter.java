@@ -493,6 +493,9 @@ public class ScarletHunter extends PathfinderMob {
             //damage事件额外修改伤害
             damage = ForgeHooks.onLivingDamage(this, pDamageSource, damage);
 
+            if(pDamageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)){
+                damage -= getMaxHealth();
+            }
 
             //进行限伤计算
             if(!pDamageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && !pDamageSource.is(CEDamageTypeTags.EXECUTION)) {
@@ -607,6 +610,7 @@ public class ScarletHunter extends PathfinderMob {
             }
         }
     }
+
     public void broadcastToNearbyPlayers(Component message, double radius) {
         Level level = this.level();
         AABB area = this.getBoundingBox().inflate(radius);

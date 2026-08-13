@@ -157,10 +157,8 @@ public class ScarletHunterAI {
                                 .setPhase(0)
                                 .resetGuardTime(true)
                                 .onCounterStart(
-                                        highStunImmunity(60),
-                                        mobPatch -> {
-                                            CEPatchUtils.setPhase(mobPatch,1);
-                                        }
+                                        new CounterStartEvent(highStunImmunity(60)),
+                                        new CounterStartEvent(mobPatch -> {CEPatchUtils.setPhase(mobPatch,1);})
                                 )
 
                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
@@ -168,20 +166,20 @@ public class ScarletHunterAI {
                                         .animationBehavior(AnimationsX.BIPED_STEP_LEFT , new AnimationParams()
                                                 .playSpeed(1.5F))
                                         .addTimeEvent(lookAtTarget())
-                                        .addExBehavior(highStunImmunity(40))
+                                        .onBehaviorStart(highStunImmunity(40))
 
                                         .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                 .withinDistance(0,6)
                                                 .animationBehavior(ExtraAnimations.SCYTHE_TWOHAND_DASH, new AnimationParams()
                                                         .transitionTime(0.1F).playSpeed(1.5F)
                                                 )
-                                                .addExBehavior(highStunImmunity(40))
+                                                .onBehaviorStart(highStunImmunity(40))
                                         )
 
                                         .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                 .withinDistance(0,3)
                                                 .animationBehavior(EFNScytheAnimations.SCYTHE_AIR_SLASH, 0.1F)
-                                                .addExBehavior(highStunImmunity(40))
+                                                .onBehaviorStart(highStunImmunity(40))
                                         )
                                 )
 
@@ -190,20 +188,20 @@ public class ScarletHunterAI {
                                         .animationBehavior(AnimationsX.BIPED_STEP_RIGHT, new AnimationParams()
                                                 .playSpeed(1.5F))
                                         .addTimeEvent(lookAtTarget())
-                                        .addExBehavior(highStunImmunity(40))
+                                        .onBehaviorStart(highStunImmunity(40))
 
                                         .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                 .withinDistance(0,6)
                                                 .animationBehavior(ExtraAnimations.SCYTHE_TWOHAND_DASH, new AnimationParams()
                                                         .transitionTime(0.1F).playSpeed(1.5F)
                                                 )
-                                                .addExBehavior(highStunImmunity(40))
+                                                .onBehaviorStart(highStunImmunity(40))
                                         )
 
                                         .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                 .withinDistance(0,3)
                                                 .animationBehavior(EFNScytheAnimations.SCYTHE_AIR_SLASH, 0.1F)
-                                                .addExBehavior(highStunImmunity(40))
+                                                .onBehaviorStart(highStunImmunity(40))
                                         )
                                 )
 
@@ -268,7 +266,7 @@ public class ScarletHunterAI {
                                         }
                                     });
                                 }))
-                                .addExBehavior(spawnBypassGuardParticle())
+                                .onBehaviorStart(spawnBypassGuardParticle())
 
                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                         .phaseContain(1)
@@ -277,7 +275,7 @@ public class ScarletHunterAI {
                                         .animationBehavior(ExtraAnimations.SCYTHE_SKILL_01_GRAB_DRAIN, new AnimationParams())
                                         .setPhase(0)
                                         .addTimeEvent(lookAtTarget())
-                                        .addExBehavior(mobPatch -> {
+                                        .onBehaviorStart(mobPatch -> {
                                             LivingEntity target = mobPatch.getTarget();
                                             if(target != null && target.position().distanceToSqr(mobPatch.getOriginal().position()) < 2 * 2){
                                                 LivingEntityPatch<?> entityPatch = EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
@@ -298,7 +296,7 @@ public class ScarletHunterAI {
                                         .animationBehavior(ExtraAnimations.SCYTHE_SKILL_01_GRAB_BEHEAD, new AnimationParams())
                                         .setPhase(0)
                                         .addTimeEvent(lookAtTarget())
-                                        .addExBehavior(mobPatch -> {
+                                        .onBehaviorStart(mobPatch -> {
                                             LivingEntity target = mobPatch.getTarget();
                                             if(target != null && target.position().distanceToSqr(mobPatch.getOriginal().position()) < 2 * 2){
                                                 LivingEntityPatch<?> entityPatch = EpicFightCapabilities.getEntityPatch(target, LivingEntityPatch.class);
@@ -336,11 +334,14 @@ public class ScarletHunterAI {
                                 .counterType(CECombatBehaviors.CounterType.END)
                                 .maxGuardHit(2)
                                 .setPhase(0)
-                                .onCounterStart(highStunImmunity(40), mobPatch -> {
-                                    teleportInFrontAlongLine(mobPatch.getOriginal(), mobPatch.getTarget(), 2.5, 0);
-                                    mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT,0,0);
-                                    CEPatchUtils.setPhase(mobPatch,1);
-                                })
+                                .onCounterStart(
+                                        new CounterStartEvent(highStunImmunity(40)),
+                                        new CounterStartEvent(mobPatch -> {
+                                            teleportInFrontAlongLine(mobPatch.getOriginal(), mobPatch.getTarget(), 2.5, 0);
+                                            mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT,0,0);
+                                            CEPatchUtils.setPhase(mobPatch,1);
+                                        })
+                                )
 
                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                         .phaseContain(1)
@@ -375,7 +376,7 @@ public class ScarletHunterAI {
                         .addFirstBehavior(CECombatBehaviors.Behavior.builder()
                                 .withinDistance(0,2)
                                 .animationBehavior(EFNDodgeAnimations.YAMATO_STEP_B, 0)
-                                .addExBehavior(mobPatch -> {
+                                .onBehaviorStart(mobPatch -> {
                                     mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT,0,0);
                                 })
                         )
@@ -383,7 +384,7 @@ public class ScarletHunterAI {
                         .addFirstBehavior(CECombatBehaviors.Behavior.builder()
                                 .withinDistance(0,2)
                                 .animationBehavior(EFNDodgeAnimations.YAMATO_STEP_L, 0)
-                                .addExBehavior(mobPatch -> {
+                                .onBehaviorStart(mobPatch -> {
                                     mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT,0,0);
                                 })
                         )
@@ -391,7 +392,7 @@ public class ScarletHunterAI {
                         .addFirstBehavior(CECombatBehaviors.Behavior.builder()
                                 .withinDistance(0,2)
                                 .animationBehavior(EFNDodgeAnimations.YAMATO_STEP_R, 0)
-                                .addExBehavior(mobPatch -> {
+                                .onBehaviorStart(mobPatch -> {
                                     mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT,0,0);
                                 })
                         )
@@ -408,7 +409,7 @@ public class ScarletHunterAI {
                                         .transitionTime(0.25F).playSpeed(1.0F)
                                 )
                                 .setPhase(0)
-                                .addExBehavior(highStunImmunity(5))
+                                .onBehaviorStart(highStunImmunity(5))
 
                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                         .withinDistance(0, 6)
@@ -422,7 +423,7 @@ public class ScarletHunterAI {
                                                 .animationBehavior(EFNScytheAnimations.SCYTHE_AUTO3, new AnimationParams()
                                                         .transitionTime(0.25F).playSpeed(1.2F)
                                                 )
-                                                .addExBehavior(highStunImmunity(40))
+                                                .onBehaviorStart(highStunImmunity(40))
                                                 .waitTime(20)
 
                                                 //75%血以下变为完整版
@@ -437,7 +438,7 @@ public class ScarletHunterAI {
                                                                 .canInsertGlobalBehavior(true, "全局-防反A","全局-防反B")
                                                                 .withinDistance(0, 6)
                                                                 .animationBehavior(EFNScytheAnimations.SCYTHE_AUTO5, new AnimationParams())
-                                                                .addExBehavior(highStunImmunity(40))
+                                                                .onBehaviorStart(highStunImmunity(40))
                                                                 .waitTime(20)
                                                         )
                                                 )
@@ -451,7 +452,7 @@ public class ScarletHunterAI {
                                         .transitionTime(0.25F).playSpeed(1.0F)
                                 )
                                 .setPhase(0)
-                                .addExBehavior(highStunImmunity(5))
+                                .onBehaviorStart(highStunImmunity(5))
 
                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                         .withinDistance(0, 6)
@@ -465,7 +466,7 @@ public class ScarletHunterAI {
                                                 .animationBehavior(EFNScytheAnimations.SCYTHE_AUTO4, new AnimationParams()
                                                         .transitionTime(0.15F).playSpeed(1.2F)
                                                 )
-                                                .addExBehavior(highStunImmunity(40))
+                                                .onBehaviorStart(highStunImmunity(40))
                                                 .waitTime(20)
 
                                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
@@ -473,7 +474,7 @@ public class ScarletHunterAI {
                                                         .withinDistance(0, 6)
                                                         .health(0.75F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
                                                         .animationBehavior(EFNScytheAnimations.SCYTHE_AUTO5, new AnimationParams())
-                                                        .addExBehavior(highStunImmunity(40))
+                                                        .onBehaviorStart(highStunImmunity(40))
                                                         .waitTime(20)
                                                 )
                                         )
@@ -486,7 +487,7 @@ public class ScarletHunterAI {
                                 .animationBehavior(EFNScytheAnimations.SCYTHE_AIR_SLASH, new AnimationParams()
                                         .transitionTime(0.25F).playSpeed(1.0F)
                                 )
-                                .addExBehavior(highStunImmunity(5))
+                                .onBehaviorStart(highStunImmunity(5))
 
                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                         .withinDistance(0, 6)
@@ -502,7 +503,7 @@ public class ScarletHunterAI {
                                                         .addPhase(0, new PhaseParams().damageMultiplier(1.25F))
                                                         .addPhase(1, new PhaseParams().damageMultiplier(1.75F))
                                                 )
-                                                .addExBehavior(highStunImmunity(40))
+                                                .onBehaviorStart(highStunImmunity(40))
                                                 .waitTime(40)
                                         )
                                 )
@@ -519,20 +520,20 @@ public class ScarletHunterAI {
                                 .withinDistance(0, 4)
                                 .animationBehavior(AnimationsX.SPEAR_TWOHAND_AUTO1, new AnimationParams()
                                         .transitionTime(0.25F))
-                                .addExBehavior(highStunImmunity(20))
+                                .onBehaviorStart(highStunImmunity(20))
                                 .setPhase(0)
 
                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                         .withinDistance(0, 6)
                                         .animationBehavior(AnimationsX.SPEAR_TWOHAND_AUTO2, new AnimationParams())
-                                        .addExBehavior(highStunImmunity(20))
+                                        .onBehaviorStart(highStunImmunity(20))
 
                                         .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                 .wander(5,0,0)
 
                                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                         .animationBehavior(EFNDodgeAnimations.YAMATO_STEP_F, new AnimationParams())
-                                                        .addExBehavior(highStunImmunity(20), mobPatch -> {
+                                                        .onBehaviorStart(highStunImmunity(20), mobPatch -> {
                                                             mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT,0,0);
                                                         })
 
@@ -549,7 +550,7 @@ public class ScarletHunterAI {
                                                                                 ))
                                                                         )
                                                                 )
-                                                                .addExBehavior(highStunImmunity(60))
+                                                                .onBehaviorStart(highStunImmunity(60))
                                                                 .addHitEvent(new HitEvent(2, (mobPatch, entity) ->{
                                                                     entity.level().playSound(null,entity.getX(), entity.getY(), entity.getZ(),EpicFightSounds.BLADE_RUSH_FINISHER.get(), SoundSource.HOSTILE,1,1);
                                                                 }))
@@ -581,7 +582,7 @@ public class ScarletHunterAI {
                         .addFirstBehavior(CECombatBehaviors.Behavior.builder()
                                 .withinDistance(0, 4)
                                 .animationBehavior(EFNDodgeAnimations.YAMATO_STEP_L, new AnimationParams())
-                                .addExBehavior(highStunImmunity(20), mobPatch -> {
+                                .onBehaviorStart(highStunImmunity(20), mobPatch -> {
                                     mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT,0,0);
                                 })
                                 .addTimeEvent(lookAtTarget())
@@ -604,7 +605,7 @@ public class ScarletHunterAI {
                                                         ))
                                                 )
                                         )
-                                        .addExBehavior(highStunImmunity(60), spawnBypassDodgeParticle())
+                                        .onBehaviorStart(highStunImmunity(60), spawnBypassDodgeParticle())
                                         .addTimeEvent(new TimeEvent(0.75F, mobPatch -> {
                                             if(mobPatch.getTarget() instanceof Player) {
                                                 mobPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.GLOWING, 10, 0, false, false, false));
@@ -625,7 +626,7 @@ public class ScarletHunterAI {
                         .addFirstBehavior(CECombatBehaviors.Behavior.builder()
                                 .withinDistance(0, 4)
                                 .animationBehavior(EFNDodgeAnimations.YAMATO_STEP_R, new AnimationParams())
-                                .addExBehavior(highStunImmunity(20), mobPatch -> {
+                                .onBehaviorStart(highStunImmunity(20), mobPatch -> {
                                     mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT,0,0);
                                 })
                                 .addTimeEvent(lookAtTarget())
@@ -641,7 +642,7 @@ public class ScarletHunterAI {
                                                         ))
                                                 )
                                         )
-                                        .addExBehavior(highStunImmunity(60), spawnBypassDodgeParticle())
+                                        .onBehaviorStart(highStunImmunity(60), spawnBypassDodgeParticle())
                                 )
                         )
                 )
@@ -658,7 +659,7 @@ public class ScarletHunterAI {
                                 .animationBehavior(EFNDodgeAnimations.YAMATO_STEP_F, new AnimationParams())
                                 .addTimeEvent(lookAtTarget())
                                 .setPhase(0)
-                                .addExBehavior(highStunImmunity(20), mobPatch -> {
+                                .onBehaviorStart(highStunImmunity(20), mobPatch -> {
                                     mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT,0,0);
                                     teleportInFrontAlongLine(mobPatch.getOriginal(), mobPatch.getTarget(), 4, 0);
                                 })
@@ -683,7 +684,7 @@ public class ScarletHunterAI {
                                 .withinDistance(0, 5)
                                 .canInsertGlobalBehavior(true,"全局-投技")
                                 .wander(0,0,0)
-                                .addExBehavior(highStunImmunity(100))
+                                .onBehaviorStart(highStunImmunity(100))
                                 .setPhase(0)
                         )
                 )
@@ -699,7 +700,7 @@ public class ScarletHunterAI {
                                 .withinDistance(0, 4)
                                 .health(0.75F, HealthCheck.Comparator.LESS_RATIO_CONTAIN)
                                 .animationBehavior(EFNDodgeAnimations.YAMATO_STEP_F, 0F)
-                                .addExBehavior(highStunImmunity(100), mobPatch -> {
+                                .onBehaviorStart(highStunImmunity(100), mobPatch -> {
                                     mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT,0,0);
                                     teleportInFrontAlongLine(mobPatch.getOriginal(), mobPatch.getTarget(), 0, 0);
                                 })
@@ -721,7 +722,7 @@ public class ScarletHunterAI {
 
                                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                         .animationBehavior(EFNDodgeAnimations.YAMATO_STEP_F, 0F)
-                                                        .addExBehavior(highStunImmunity(100), mobPatch -> {
+                                                        .onBehaviorStart(highStunImmunity(100), mobPatch -> {
                                                             mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT,0,0);
                                                             teleportInFrontAlongLine(mobPatch.getOriginal(), mobPatch.getTarget(), 0, 0);
                                                         })
@@ -741,7 +742,7 @@ public class ScarletHunterAI {
 
                                                                         .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                                                 .animationBehavior(EFNDodgeAnimations.YAMATO_STEP_F, 0F)
-                                                                                .addExBehavior(highStunImmunity(100), mobPatch -> {
+                                                                                .onBehaviorStart(highStunImmunity(100), mobPatch -> {
                                                                                     mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT,0,0);
                                                                                     if(mobPatch.getTarget() != null){
                                                                                         teleportInFrontAlongLine(mobPatch.getOriginal(), mobPatch.getTarget(), 1.5, 0);
@@ -756,7 +757,7 @@ public class ScarletHunterAI {
 
                                                                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                                                         .animationBehavior(EFNDodgeAnimations.YAMATO_STEP_U, 0F)
-                                                                                        .addExBehavior(highStunImmunity(100), mobPatch -> {
+                                                                                        .onBehaviorStart(highStunImmunity(100), mobPatch -> {
                                                                                             mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT,0,0);
                                                                                         })
                                                                                         .addTimeEvent(lookAtTarget())
@@ -771,7 +772,7 @@ public class ScarletHunterAI {
                                                                                                                 .damageSource(Set.of(EpicFightDamageTypeTags.FINISHER))
                                                                                                         )
                                                                                                 )
-                                                                                                .addExBehavior(mobPatch -> {
+                                                                                                .onBehaviorStart(mobPatch -> {
                                                                                                     mobPatch.getOriginal().addEffect(new MobEffectInstance(CEMobEffects.BYPASS_DODGE_EFFECT.get(), 40, 255));
                                                                                                     mobPatch.getOriginal().addEffect(new MobEffectInstance(CEMobEffects.BYPASS_GUARD_EFFECT.get(), 40, 255));
                                                                                                     mobPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 20, 255));
@@ -830,7 +831,7 @@ public class ScarletHunterAI {
                                             spawnBloodBoom(mobPatch, 70, 20, 30, 4, verticalSpeed, damage);
                                         })
                                 )
-                                .addExBehavior(fullStunImmunity(300))
+                                .onBehaviorStart(fullStunImmunity(300))
 
 
                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
@@ -848,7 +849,7 @@ public class ScarletHunterAI {
                                                 .interruptedByTime(0.15F, 10F)
                                                 .animationBehavior(EFNDodgeAnimations.YAMATO_STEP_F, 0)
                                                 .addTimeEvent(lookAtTarget())
-                                                .addExBehavior(mobPatch -> {
+                                                .onBehaviorStart(mobPatch -> {
                                                     teleportInFrontAlongLine(mobPatch.getOriginal(), mobPatch.getTarget(),3,0);
                                                     mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT,0,0);
                                                 })
@@ -870,10 +871,10 @@ public class ScarletHunterAI {
                                                                 .animationBehavior(EFNLanceAnimations.NF_MEEN_CHARGE2,new AnimationParams()
                                                                         .transitionTime(0.25F).playSpeed(1F)
                                                                 )
-                                                                .addExBehavior(mobPatch -> {
+                                                                .onBehaviorStart(mobPatch -> {
                                                                     mobPatch.playSound(SoundEvents.TRIDENT_RIPTIDE_3,1,0,0);
                                                                 })
-                                                                .addExBehavior(highStunImmunity(120))
+                                                                .onBehaviorStart(highStunImmunity(120))
 
                                                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                                         .canInterruptParent(true)
@@ -886,7 +887,7 @@ public class ScarletHunterAI {
                                                                                         ))
                                                                                 )
                                                                         )
-                                                                        .addExBehavior(spawnBypassGuardParticle(0.75))
+                                                                        .onBehaviorStart(spawnBypassGuardParticle(0.75))
                                                                         .addTimeEvent(
                                                                                 new TimeEvent(0.6F,mobPatch -> {
                                                                                     CEPatchUtils.setPlaySpeed(mobPatch,0.75F);
@@ -921,17 +922,17 @@ public class ScarletHunterAI {
                                     return scarletHunter.getBossPhase() == 0 && scarletHunter.getPhaseChangeCounter() > 0;
                                 })
                                 .animationBehavior(EFNDodgeAnimations.YAMATO_STEP_B, new AnimationParams())
-                                .addExBehavior(mobPatch -> {
+                                .onBehaviorStart(mobPatch -> {
                                     mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT,0,0);
                                 })
                                 .addTimeEvent(lookAtTarget())
-                                .addExBehavior(fullStunImmunity(100))
+                                .onBehaviorStart(fullStunImmunity(100))
                                 .addCooldown(-1000)
 
                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                         .interruptedByTime(0.05F, 10F)
                                         .animationBehavior(EFNAnimations.DMC5_V_JC, 0)
-                                        .addExBehavior(mobPatch -> {
+                                        .onBehaviorStart(mobPatch -> {
                                             if(mobPatch.getTarget() instanceof Player) {
                                                 mobPatch.playSound(SoundEvents.ANVIL_LAND, 0, 0);
                                                 mobPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.GLOWING, 60, 0, false, false, false));
@@ -968,7 +969,7 @@ public class ScarletHunterAI {
                                                             CEPatchUtils.setPlaySpeed(mobPatch,0.75F);
                                                         })
                                                 )
-                                                .addExBehavior(mobPatch -> {
+                                                .onBehaviorStart(mobPatch -> {
 
                                                     CEPatchUtils.setStaminaStatus(mobPatch, StaminaStatus.COMMON);
                                                     CEPatchUtils.setStamina(mobPatch,CEPatchUtils.getMaxStamina(mobPatch));
@@ -1012,17 +1013,17 @@ public class ScarletHunterAI {
                                 .withinDistance(0,8)
                                 .custom(isPhaseTwo())
                                 .animationBehavior(EFNDodgeAnimations.YAMATO_STEP_B, new AnimationParams())
-                                .addExBehavior(fullStunImmunity(120),mobPatch -> {
+                                .onBehaviorStart(fullStunImmunity(120),mobPatch -> {
                                     mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT,0,0);
                                 })
                                 .setPhase(0)
                                 .addTimeEvent(lookAtTarget())
-                                .addExBehavior(fullStunImmunity(100))
+                                .onBehaviorStart(fullStunImmunity(100))
 
                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                         .interruptedByTime(0.05F, 10F)
                                         .animationBehavior(EFNAnimations.DMC5_V_JC, 0)
-                                        .addExBehavior(mobPatch -> {
+                                        .onBehaviorStart(mobPatch -> {
                                             if(mobPatch.getTarget() instanceof Player) {
                                                 mobPatch.playSound(SoundEvents.ANVIL_LAND, 0, 0);
                                                 mobPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.GLOWING, 60, 0, false, false, false));
@@ -1061,7 +1062,7 @@ public class ScarletHunterAI {
                                                             spawnBloodBoom(mobPatch, 75, 10, 80, 1F, 0.4, damage);
                                                         })
                                                 )
-                                                .addExBehavior(mobPatch -> {
+                                                .onBehaviorStart(mobPatch -> {
                                                     mobPatch.playSound(SoundEvents.WITHER_SPAWN,1,0,0);
                                                     List<LivingEntity> entitiesInRange = mobPatch.getOriginal().level().getEntitiesOfClass(LivingEntity.class, mobPatch.getOriginal().getBoundingBox().inflate(30F), living -> {
                                                         return (mobPatch.getTarget() != null && living == mobPatch.getTarget()) ||
@@ -1096,17 +1097,17 @@ public class ScarletHunterAI {
                                 .withinDistance(0,8)
                                 .custom(isPhaseThree())
                                 .animationBehavior(EFNDodgeAnimations.YAMATO_STEP_B, new AnimationParams())
-                                .addExBehavior(fullStunImmunity(120),mobPatch -> {
+                                .onBehaviorStart(fullStunImmunity(120),mobPatch -> {
                                     mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT,0,0);
                                 })
                                 .setPhase(0)
                                 .addTimeEvent(lookAtTarget())
-                                .addExBehavior(fullStunImmunity(100))
+                                .onBehaviorStart(fullStunImmunity(100))
 
                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                         .interruptedByTime(0.05F, 10F)
                                         .animationBehavior(EFNAnimations.DMC5_V_JC, 0)
-                                        .addExBehavior(mobPatch -> {
+                                        .onBehaviorStart(mobPatch -> {
                                             if(mobPatch.getTarget() instanceof Player) {
                                                 mobPatch.playSound(SoundEvents.ANVIL_LAND, 0, 0);
                                                 mobPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.GLOWING, 60, 0, false, false, false));
@@ -1202,7 +1203,7 @@ public class ScarletHunterAI {
                                                         })
 
                                                 )
-                                                .addExBehavior(mobPatch -> {
+                                                .onBehaviorStart(mobPatch -> {
                                                     mobPatch.playSound(SoundEvents.WITHER_SPAWN,1,0,0);
                                                     List<LivingEntity> entitiesInRange = mobPatch.getOriginal().level().getEntitiesOfClass(LivingEntity.class, mobPatch.getOriginal().getBoundingBox().inflate(30F), living -> {
                                                         return (mobPatch.getTarget() != null && living == mobPatch.getTarget()) ||
@@ -1252,11 +1253,11 @@ public class ScarletHunterAI {
                                     double damage = mobPatch.getOriginal().getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.08F;
                                     spawnBloodBoom(mobPatch, 60, 10, 80, 2, 0.3, (float) damage);
                                 }))
-                                .addExBehavior(highStunImmunity(100))
+                                .onBehaviorStart(highStunImmunity(100))
 
                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                         .animationBehavior(EFNDodgeAnimations.YAMATO_STEP_B, 0F)
-                                        .addExBehavior(mobPatch -> {
+                                        .onBehaviorStart(mobPatch -> {
                                             teleportInFrontAlongLine(mobPatch.getOriginal(), mobPatch.getTarget(), -0.5, 0);
                                             mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT,1,0,0);
                                         })
@@ -1272,7 +1273,7 @@ public class ScarletHunterAI {
                                                                 ))
                                                         )
                                                 )
-                                                .addExBehavior(spawnBypassDodgeParticle())
+                                                .onBehaviorStart(spawnBypassDodgeParticle())
 
                                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                         .canInterruptParent(true)
@@ -1305,7 +1306,7 @@ public class ScarletHunterAI {
                                 .custom(isPhaseTwo())
                                 .setPhase(0)
                                 .animationBehavior(EFNDodgeAnimations.YAMATO_STEP_B, 0F)
-                                .addExBehavior(mobPatch -> {
+                                .onBehaviorStart(mobPatch -> {
                                     teleportInFrontAlongLine(mobPatch.getOriginal(), mobPatch.getTarget(), -0.25, 0.25);
                                     mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT,1,0,0);
                                     if (mobPatch.getTarget() != null) {
@@ -1323,7 +1324,7 @@ public class ScarletHunterAI {
                                                         .damageSource(Set.of(EpicFightDamageTypeTags.BYPASS_DODGE))
                                                 )
                                         )
-                                        .addExBehavior(spawnBypassDodgeParticle(), mobPatch -> {
+                                        .onBehaviorStart(spawnBypassDodgeParticle(), mobPatch -> {
                                             mobPatch.getOriginal().addEffect(new MobEffectInstance(CEMobEffects.BYPASS_DODGE_EFFECT.get(), 20, 0, false, false));
                                         })
 
@@ -1335,7 +1336,7 @@ public class ScarletHunterAI {
                                                         .canInterruptParent(true)
                                                         .interruptedByTime(0.2F, 10F)
                                                         .animationBehavior(EFNDodgeAnimations.YAMATO_STEP_U, new AnimationParams())
-                                                        .addExBehavior(mobPatch -> {
+                                                        .onBehaviorStart(mobPatch -> {
                                                             teleportInFrontAlongLine(mobPatch.getOriginal(), mobPatch.getTarget(), -2.5, 0);
                                                             mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT,1,0,0);
                                                             if (mobPatch.getTarget() != null) {
@@ -1352,7 +1353,7 @@ public class ScarletHunterAI {
                                                                                 .damageSource(Set.of(EpicFightDamageTypeTags.UNBLOCKALBE))
                                                                         )
                                                                 )
-                                                                .addExBehavior(mobPatch -> {
+                                                                .onBehaviorStart(mobPatch -> {
                                                                     if(mobPatch.getTarget() instanceof Player) {
                                                                         mobPatch.getOriginal().addEffect(new MobEffectInstance(MobEffects.GLOWING, 30, 0, false, false, false));
                                                                         mobPatch.playSound(SoundEvents.ANVIL_LAND, 0, 0);
@@ -1409,7 +1410,7 @@ public class ScarletHunterAI {
                                                                                 );
                                                                             }
                                                                         }))
-                                                                        .addExBehavior(mobPatch -> {
+                                                                        .onBehaviorStart(mobPatch -> {
                                                                             if(mobPatch instanceof ScarletHunterPatch scarletHunterPatch) {
                                                                                 scarletHunterPatch.getOriginal().setCanBypassSpeedLimit(true);
                                                                                 mobPatch.getOriginal().addDeltaMovement(new Vec3(0, 1, 0));
@@ -1438,7 +1439,7 @@ public class ScarletHunterAI {
                                 .setPhase(0)
                                 .animationBehavior(ExtraAnimations.SCYTHE_TWOHAND_AUTO1, new AnimationParams()
                                         .playSpeed(1.25F))
-                                .addExBehavior(highStunImmunity(20))
+                                .onBehaviorStart(highStunImmunity(20))
 
                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                         .withinDistance(0,6)
@@ -1448,13 +1449,13 @@ public class ScarletHunterAI {
                                                         .damageSource(Set.of(EpicFightDamageTypeTags.BYPASS_DODGE))
                                                 )
                                         )
-                                        .addExBehavior(spawnBypassDodgeParticle(),highStunImmunity(20))
+                                        .onBehaviorStart(spawnBypassDodgeParticle(),highStunImmunity(20))
 
                                         .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                 .animationBehavior(AnimationsX.BIPED_STEP_RIGHT, new AnimationParams()
                                                         .playSpeed(2F))
                                                 .addTimeEvent(lookAtTarget())
-                                                .addExBehavior(mobPatch -> {
+                                                .onBehaviorStart(mobPatch -> {
                                                     teleportInFrontAlongLine(mobPatch.getOriginal(), mobPatch.getTarget(), 1.5, 0);
                                                     mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT,1,0,0);
                                                 })
@@ -1462,7 +1463,7 @@ public class ScarletHunterAI {
                                                         .withinDistance(0,7)
                                                         .animationBehavior(ExtraAnimations.SCYTHE_TWOHAND_AUTO3, new AnimationParams()
                                                                 .playSpeed(1.25F))
-                                                        .addExBehavior(highStunImmunity(20))
+                                                        .onBehaviorStart(highStunImmunity(20))
 
                                                         .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                                 .withinDistance(0,8)
@@ -1472,13 +1473,13 @@ public class ScarletHunterAI {
                                                                                 .damageSource(Set.of(EpicFightDamageTypeTags.UNBLOCKALBE))
                                                                         )
                                                                 )
-                                                                .addExBehavior(spawnBypassGuardParticle(),highStunImmunity(20))
+                                                                .onBehaviorStart(spawnBypassGuardParticle(),highStunImmunity(20))
 
                                                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                                         .animationBehavior(AnimationsX.BIPED_STEP_LEFT, new AnimationParams()
                                                                                 .playSpeed(2F))
                                                                         .addTimeEvent(lookAtTarget())
-                                                                        .addExBehavior(mobPatch -> {
+                                                                        .onBehaviorStart(mobPatch -> {
                                                                             teleportInFrontAlongLine(mobPatch.getOriginal(), mobPatch.getTarget(), 1.5, 0);
                                                                             mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT,1,0,0);
                                                                         })
@@ -1497,7 +1498,7 @@ public class ScarletHunterAI {
                                                                                         )
                                                                                 )
                                                                                 .addTimeEvent(lookAtTarget(), new TimeEvent(0.45F, spawnBypassDodgeParticle()))
-                                                                                .addExBehavior(highStunImmunity(40))
+                                                                                .onBehaviorStart(highStunImmunity(40))
 
                                                                         )
                                                                 )
@@ -1523,7 +1524,7 @@ public class ScarletHunterAI {
                                         .canInterruptParent(true)
                                         .animationBehavior(EFNMurasamaAnimations.HF_MURASAMA_Y_CHARGE_AIR, new AnimationParams()
                                                 .playSpeed(0.7F))
-                                        .addExBehavior(mobPatch -> {costStamina(mobPatch, 5F);})
+                                        .onBehaviorStart(mobPatch -> {costStamina(mobPatch, 5F);})
                                         .addTimeEvent(
                                                 new TimeEvent(0,0.7F,mobPatch -> {
                                                     LivingEntity original = mobPatch.getOriginal();
@@ -1582,7 +1583,7 @@ public class ScarletHunterAI {
                         .addFirstBehavior(CECombatBehaviors.Behavior.builder()
                                 .name("空中连斩落地派生")
                                 .animationBehavior(EFNDodgeAnimations.YAMATO_STEP_U, new AnimationParams())
-                                .addExBehavior(mobPatch -> {
+                                .onBehaviorStart(mobPatch -> {
                                     mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT, 2, 0, 0);
                                 })
 
@@ -1590,7 +1591,7 @@ public class ScarletHunterAI {
                                         .animationBehavior(EFNMurasamaAnimations.HF_MURASAMA_X_AIR, new AnimationParams()
                                                 .transitionTime(0.05F)
                                                 .playSpeed(1.5F))
-                                        .addExBehavior(mobPatch -> {costStamina(mobPatch, 2.5F);})
+                                        .onBehaviorStart(mobPatch -> {costStamina(mobPatch, 2.5F);})
                                         .addTimeEvent(
                                                 new TimeEvent(0,0.25F,mobPatch -> {
                                                     LivingEntity original = mobPatch.getOriginal();
@@ -1622,7 +1623,7 @@ public class ScarletHunterAI {
                                                 .animationBehavior(EFNMurasamaAnimations.HF_MURASAMA_XX_AIR, new AnimationParams()
                                                         .transitionTime(0.05F)
                                                         .playSpeed(1.5F))
-                                                .addExBehavior(mobPatch -> {costStamina(mobPatch, 2.5F);})
+                                                .onBehaviorStart(mobPatch -> {costStamina(mobPatch, 2.5F);})
                                                 .addTimeEvent(
                                                         new TimeEvent(0,0.25F,mobPatch -> {
                                                             LivingEntity original = mobPatch.getOriginal();
@@ -1654,7 +1655,7 @@ public class ScarletHunterAI {
                                                         .animationBehavior(EFNMurasamaAnimations.HF_MURASAMA_X_AIR, new AnimationParams()
                                                                 .transitionTime(0.05F)
                                                                 .playSpeed(1.5F))
-                                                        .addExBehavior(mobPatch -> {costStamina(mobPatch, 2.5F);})
+                                                        .onBehaviorStart(mobPatch -> {costStamina(mobPatch, 2.5F);})
                                                         .addTimeEvent(
                                                                 new TimeEvent(0,0.25F,mobPatch -> {
                                                                     LivingEntity original = mobPatch.getOriginal();
@@ -1687,7 +1688,7 @@ public class ScarletHunterAI {
                                                                 .animationBehavior(EFNMurasamaAnimations.HF_MURASAMA_XX_AIR, new AnimationParams()
                                                                         .transitionTime(0.05F)
                                                                         .playSpeed(1.5F))
-                                                                .addExBehavior(mobPatch -> {costStamina(mobPatch, 2.5F);})
+                                                                .onBehaviorStart(mobPatch -> {costStamina(mobPatch, 2.5F);})
                                                                 .addTimeEvent(
                                                                         new TimeEvent(0,0.25F,mobPatch -> {
                                                                             LivingEntity original = mobPatch.getOriginal();
@@ -1731,7 +1732,7 @@ public class ScarletHunterAI {
                                                                                         .canInterruptParent(true)
                                                                                         .animationBehavior(EFNMurasamaAnimations.HF_MURASAMA_XXY_CHARGE, new AnimationParams()
                                                                                                 .playSpeed(0.85F))
-                                                                                        .addExBehavior(mobPatch -> {costStamina(mobPatch, 2.5F);})
+                                                                                        .onBehaviorStart(mobPatch -> {costStamina(mobPatch, 2.5F);})
                                                                                         .addTimeEvent(
                                                                                                 new TimeEvent(0,1F,mobPatch -> {
                                                                                                     LivingEntity original = mobPatch.getOriginal();
@@ -1806,7 +1807,7 @@ public class ScarletHunterAI {
                                 .setPhase(0)
                                 .animationBehavior(EFNDodgeAnimations.MURASAMA_ROLL_B, new AnimationParams())
                                 .addTimeEvent(lookAtTarget())
-                                .addExBehavior(highStunImmunity(200))
+                                .onBehaviorStart(highStunImmunity(200))
 
                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                         .wander(5,0,0)
@@ -1815,7 +1816,7 @@ public class ScarletHunterAI {
                                                 .canInsertGlobalBehavior(true, "全局-空中剑气A","全局-空中剑气B")
                                                 .animationBehavior(EFNMurasamaAnimations.HF_MURASAMA_XY_CHARGE, new AnimationParams()
                                                         .transitionTime(0.2F))
-                                                .addExBehavior(mobPatch -> {costStamina(mobPatch, 5F);})
+                                                .onBehaviorStart(mobPatch -> {costStamina(mobPatch, 5F);})
                                                 .addTimeEvent(
                                                         new TimeEvent(0,1.2F,mobPatch -> {
                                                             LivingEntity original = mobPatch.getOriginal();
@@ -1843,7 +1844,7 @@ public class ScarletHunterAI {
                                                             spawnBloodSlash(mobPatch, yaw + 30, pitch, roll, 2, 0.1F, 0.25F);
                                                         })
                                                 )
-                                                .addExBehavior(mobPatch -> {
+                                                .onBehaviorStart(mobPatch -> {
                                                     if(mobPatch.getTarget() instanceof Player) {
                                                         mobPatch.playSound(SoundEvents.FIRECHARGE_USE,2,0,0);
                                                         EntityUtils.pushEntitiesAwayByDistance(mobPatch.getOriginal(), mobPatch.getOriginal().level(), 16, 2.0F, 0.15F);
@@ -1870,15 +1871,15 @@ public class ScarletHunterAI {
                                 .withinDistance(0,16)
                                 .animationBehavior(EFNDodgeAnimations.YAMATO_STEP_B, new AnimationParams())
                                 .addTimeEvent(lookAtTarget())
-                                .addExBehavior(mobPatch -> {
+                                .onBehaviorStart(mobPatch -> {
                                     mobPatch.playSound(SoundEvents.ENDERMAN_TELEPORT, 2,0,0);
                                 })
 
                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                         .animationBehavior(EFNMurasamaAnimations.HF_MURASAMA_Y_CHARGE_THROUGH, new AnimationParams()
                                                 .transitionTime(0.15F).playSpeed(0.7F))
-                                        .addExBehavior(mobPatch -> {costStamina(mobPatch, 5F);})
-                                        .addExBehavior(highStunImmunity(200),mobPatch -> {
+                                        .onBehaviorStart(mobPatch -> {costStamina(mobPatch, 5F);})
+                                        .onBehaviorStart(highStunImmunity(200),mobPatch -> {
                                             LivingEntity original = mobPatch.getOriginal();
                                             Level level = original.level();
                                             EntityUtils.pushEntitiesAwayByDistance(original, level, 12, 2.25F, 0.2F);
@@ -1937,10 +1938,10 @@ public class ScarletHunterAI {
                                                         .canInterruptParent(true)
                                                         .animationBehavior(EFNMurasamaAnimations.HF_MURASAMA_XXY_CHARGE, new AnimationParams()
                                                                 .playSpeed(0.85F))
-                                                        .addExBehavior(mobPatch -> {
+                                                        .onBehaviorStart(mobPatch -> {
                                                             EntityUtils.pushEntitiesAwayByDistance(mobPatch.getOriginal(), mobPatch.getOriginal().level(), 10, 2F, 0.2F);
                                                         })
-                                                        .addExBehavior(mobPatch -> {costStamina(mobPatch, 5F);})
+                                                        .onBehaviorStart(mobPatch -> {costStamina(mobPatch, 5F);})
                                                         .addTimeEvent(
                                                                 new TimeEvent(0,1F,mobPatch -> {
                                                                     LivingEntity original = mobPatch.getOriginal();
@@ -1991,7 +1992,7 @@ public class ScarletHunterAI {
                                 .animationBehavior(EFNScytheAnimations.SCYTHE_AUTO1, new AnimationParams()
                                         .transitionTime(0.25F).playSpeed(1.25F)
                                 )
-                                .addExBehavior(highStunImmunity(200))
+                                .onBehaviorStart(highStunImmunity(200))
                                 .setPhase(0)
 
                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
@@ -2012,11 +2013,11 @@ public class ScarletHunterAI {
 
                                                         .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                                 .animationBehavior(EFNMurasamaAnimations.HF_MURASAMA_Y_CHARGE, new AnimationParams())
-                                                                .addExBehavior(mobPatch -> {
+                                                                .onBehaviorStart(mobPatch -> {
                                                                     mobPatch.playSound(SoundEvents.FIRECHARGE_USE,2,0,0);
                                                                     EntityUtils.pushEntitiesAwayByDistance(mobPatch.getOriginal(), mobPatch.getOriginal().level(), 10, 2F, 0.2F);
                                                                 })
-                                                                .addExBehavior(mobPatch -> {costStamina(mobPatch, 5F);})
+                                                                .onBehaviorStart(mobPatch -> {costStamina(mobPatch, 5F);})
                                                                 .addTimeEvent(
                                                                         new TimeEvent(0,0.8F,mobPatch -> {
                                                                             LivingEntity original = mobPatch.getOriginal();
@@ -2052,11 +2053,11 @@ public class ScarletHunterAI {
 
                                                                 .addNextBehavior(CECombatBehaviors.Behavior.builder()
                                                                         .animationBehavior(EFNMurasamaAnimations.HF_MURASAMA_XY_CHARGE, new AnimationParams())
-                                                                        .addExBehavior(mobPatch -> {
+                                                                        .onBehaviorStart(mobPatch -> {
                                                                             mobPatch.playSound(SoundEvents.FIRECHARGE_USE,2,0,0);
                                                                             EntityUtils.pushEntitiesAwayByDistance(mobPatch.getOriginal(), mobPatch.getOriginal().level(), 10, 2F, 0.2F);
                                                                         })
-                                                                        .addExBehavior(mobPatch -> {costStamina(mobPatch, 5F);})
+                                                                        .onBehaviorStart(mobPatch -> {costStamina(mobPatch, 5F);})
                                                                         .addTimeEvent(
                                                                                 new TimeEvent(0,1.2F,mobPatch -> {
                                                                                     LivingEntity original = mobPatch.getOriginal();
@@ -2103,7 +2104,7 @@ public class ScarletHunterAI {
                                                                                                 .canInterruptParent(true)
                                                                                                 .animationBehavior(EFNMurasamaAnimations.HF_MURASAMA_XXY_CHARGE, new AnimationParams()
                                                                                                         .playSpeed(0.85F))
-                                                                                                .addExBehavior(mobPatch -> {costStamina(mobPatch, 5F);})
+                                                                                                .onBehaviorStart(mobPatch -> {costStamina(mobPatch, 5F);})
                                                                                                 .addTimeEvent(
                                                                                                         new TimeEvent(0,1.0F,mobPatch -> {
                                                                                                             LivingEntity original = mobPatch.getOriginal();
@@ -2151,7 +2152,7 @@ public class ScarletHunterAI {
                                                                                         .canInterruptParent(true)
                                                                                         .animationBehavior(EFNMurasamaAnimations.HF_MURASAMA_Y_CHARGE_AIR, new AnimationParams()
                                                                                                 .playSpeed(0.7F))
-                                                                                        .addExBehavior(mobPatch -> {costStamina(mobPatch, 5F);})
+                                                                                        .onBehaviorStart(mobPatch -> {costStamina(mobPatch, 5F);})
                                                                                         .addTimeEvent(
                                                                                                 new TimeEvent(0,0.7F,mobPatch -> {
                                                                                                     LivingEntity original = mobPatch.getOriginal();
